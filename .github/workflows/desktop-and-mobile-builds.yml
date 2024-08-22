@@ -24,6 +24,7 @@ env:
   COMPANY_NAME: "omamkaz"
   SPLASH_COLOR: "#FFBF00"
   SPLASH_DARK_COLOR: "#FFBF00"
+  ANDROID_PLATFORM_TARGET: "android-arm64"
 
 jobs:
   build-linux:
@@ -212,7 +213,8 @@ jobs:
         --splash-dark-color=$SPLASH_DARK_COLOR \
         --company=$COMPANY_NAME \
         --flutter-build-args=--release \
-        --flutter-build-args=--analyze-size
+        --flutter-build-args=--analyze-size \
+        --flutter-build-args=--target-platform --flutter-build-args=$ANDROID_PLATFORM_TARGET
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4.3.4
