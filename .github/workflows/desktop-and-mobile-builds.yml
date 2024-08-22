@@ -214,7 +214,8 @@ jobs:
         --company=$COMPANY_NAME \
         --flutter-build-args=--release \
         --flutter-build-args=--analyze-size \
-        --flutter-build-args=--target-platform --flutter-build-args=$ANDROID_PLATFORM_TARGET
+        --flutter-build-args=--target-platform \
+        --flutter-build-args=$ANDROID_PLATFORM_TARGET
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4.3.4
