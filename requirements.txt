@@ -1,4 +1,5 @@
-flet==0.24.0.dev3303
+# flet==0.22.*
+flet==0.24.0.dev3274
 bs4==0.0.2
-requests==2.32.3
+requests==2.32.*
 humanize==4.10.0

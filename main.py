@@ -204,23 +204,23 @@ class MainWindow:
         return [
             self.card,
             ft.Container(
-                content=ft.Column(
+                content=ft.Row(
                     controls=[
-                        ft.Text(
-                            ref = self.card_title,
-                            size = 18,
-                            text_align="center",
-                            font_family="ElMessiri"
-                        ),
                         ft.Text(
                             ref = self.last_check_time,
                             size = 13, 
                             text_align="center",
                             font_family="Cairo"
+                        ),
+                        ft.Text(
+                            ref = self.card_title,
+                            size = 18,
+                            text_align="center",
+                            font_family="ElMessiri"
                         )
                     ],
-                    alignment=ft.MainAxisAlignment.CENTER,
-                    horizontal_alignment=ft.CrossAxisAlignment.CENTER
+                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                    vertical_alignment=ft.CrossAxisAlignment.CENTER
                 ),
             ),
             # ft.TextField(
@@ -228,42 +228,65 @@ class MainWindow:
             #     on_change=self.handle_search_item
             # ),
             self.recent_user,
-            ft.Row(
-                controls = [
-                    ft.IconButton(
-                        icon=ft.icons.DARK_MODE,
-                        on_click=lambda e: self._page.open(self.theme_mode_select),
-                    ),
-                    ft.IconButton(
-                        icon=ft.icons.REFRESH,
-                        on_click=self.on_refresh_user
-                    ),
-                    ft.IconButton(
-                        icon=ft.icons.ADD,
-                        on_click=self.on_add_user
-                    )
-                ],
-                alignment=ft.MainAxisAlignment.SPACE_EVENLY
+            ft.Container(
+                border_radius=10,
+                bgcolor=ft.colors.AMBER_400,
+                shadow = ft.BoxShadow(
+                    # spread_radius=0.7,
+                    blur_radius=4
+                ),
+                content=ft.Row(
+                    controls = [
+                        ft.IconButton(
+                            icon_color = ft.colors.BROWN,
+                            icon=ft.icons.DARK_MODE,
+                            on_click=lambda e: self._page.open(self.theme_mode_select),
+                        ),
+                        ft.IconButton(
+                            icon_color = ft.colors.BROWN,
+                            icon=ft.icons.REFRESH,
+                            on_click=self.on_refresh_user
+                        ),
+                        ft.IconButton(
+                            icon_color = ft.colors.BROWN,
+                            icon=ft.icons.ADD,
+                            on_click=self.on_add_user
+                        )
+                    ],
+                    alignment=ft.MainAxisAlignment.SPACE_EVENLY
+                )
             ),
             ## About Creator
-            ft.Text(
-                spans=[
-                    ft.TextSpan(
-                        text = "created by" + (" " * 2),
-                        style = ft.TextStyle(
-                            size=10,
-                            italic=True
-                        )
+            ft.Row(
+                controls=[
+                    ft.Text(
+                        value = "v2.0.0",
+                        size = 10,
+                        text_align="left"
                     ),
-                    ft.TextSpan(
-                        text = "omamkaz",
-                        style = ft.TextStyle(
-                            size=11, 
-                            letter_spacing=2
-                        )
+                    ft.Text(
+                        spans=[
+                            ft.TextSpan(
+                                text = "تم الانشاء بواسطة: ",
+                                style = ft.TextStyle(
+                                    size=10,
+                                    font_family="Cairo"
+                                )
+                            ),
+                            ft.TextSpan(
+                                text = "أسامة الزبيدي",
+                                style = ft.TextStyle(
+                                    size=11, 
+                                    letter_spacing=2,
+                                    weight=ft.FontWeight.BOLD,
+                                    font_family="ElMessiri"
+                                )
+                            )
+                        ],
+                        selectable=True
                     )
                 ],
-                selectable=True
+                alignment=ft.MainAxisAlignment.SPACE_BETWEEN
             )
         ]
 
@@ -303,15 +326,21 @@ def main(page: ft.Page):
         "Cairo": "fonts/Cairo-Regular.ttf"
     }
 
-    page.theme_mode = ft.ThemeMode(page.client_storage.get("theme.mode") or "system")
+    theme_mode: str = page.client_storage.get("theme.mode") or "system"
+    page.theme_mode = ft.ThemeMode(theme_mode)
+
+    theme_color = ft.colors.AMBER_ACCENT
     page.theme = ft.Theme(
-        color_scheme_seed=ft.colors.INDIGO
+        primary_color = theme_color,
+        color_scheme_seed=theme_color,
+        card_theme=ft.CardTheme(
+            color = theme_color
+        )
     )
 
-    # page.window.width = 340
-    # page.window.height = 700
-
-    page.window.wait_until_ready_to_show = True
+    # page.window.wait_until_ready_to_show = True
+    # page.window.width = 300
+    # page.window.height = 600
 
     page.window.icon = "assets/icon.png"
     page.title = "Yemen Net (omamkaz)"

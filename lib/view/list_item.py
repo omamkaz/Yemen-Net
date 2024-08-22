@@ -25,6 +25,8 @@ class YListItem(ft.ListTile):
 
         name = self.client_storage.get_user_data_key(atype, username, "name")
 
+        self.rtl = True
+
         self.title = ft.Text(name or username, no_wrap=True)
         self.subtitle = ft.Text(username, no_wrap=True) if name else None
 
@@ -35,6 +37,7 @@ class YListItem(ft.ListTile):
         )
         self.trailing = ft.IconButton(
             icon = ft.icons.DELETE, 
+            icon_color = ft.colors.RED,
             on_click = on_delete_press,
             data = self.data,
             visible=False
