@@ -62,8 +62,11 @@ class ListTile(ft.ListTile):
         User.delete_user(self.data)
         Refs.users.current.update_list()
 
-        if Refs.users.current.controls:
-            Refs.cards.current.set_data(Refs.users.current.controls[0].data)
+        if (users := Refs.users.current.controls):
+            card = Refs.cards.current.toggle_card(User.get_user(users[0].data).atype)
+            card.set_data(users[0].data)
+        else:
+            Refs.cards.current.toggle_card(3)
 
     def on_edit(self, e: ft.ControlEvent):
         user_view_edit = UserViewEdit(self.page, self.data)

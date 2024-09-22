@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import flet as ft
+from ...constant import Dialogs
 
 
 class CardTitle(ft.ListTile):
@@ -37,8 +38,7 @@ class CardTitle(ft.ListTile):
 
         self.leading = ft.Container(
             content=ft.Lottie(
-                src="/lottie/down-arrow.json",
-                background_loading=False
+                src="/lottie/down-arrow.json"
             )
         )
 

@@ -16,11 +16,14 @@ class Cards(ft.Stack):
 
         self.controls = [
             ADSLCard(page),
-            LTECard(page),
-            PhoneCard(page)
+            LTECard(page, visible=False),
+            PhoneCard(page, visible=False),
+            ft.Lottie(
+                src="/lottie/online-health-report.json"
+            )
         ]
 
-    def toggle_card(self, atype: int | str) -> Card:
+    def toggle_card(self, atype: int | str = 3) -> Card:
         for i, c in enumerate(self.controls):
             c.visible = (i == int(atype))
         self.update()
@@ -96,7 +99,7 @@ class Application:
                                     border_radius=ft.BorderRadius(0, 0, 42, 42),
                                     bgcolor=page.theme.color_scheme_seed
                                 ),
-                                Cards(page, ref=Refs.cards)
+                                Cards(page, ref=Refs.cards),
                             ]
                         ),
                         UserListView(ref=Refs.users)
@@ -108,6 +111,8 @@ class Application:
         if (users := User.get_users()) and (user := users[0]).data is not None:
             card = Refs.cards.current.toggle_card(user.atype)
             card.set_data(user.id, True)
+        else:
+            Refs.cards.current.toggle_card(3)
 
 
 if __name__ == "__main__":
