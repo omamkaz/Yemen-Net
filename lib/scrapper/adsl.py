@@ -9,7 +9,7 @@ from typing import Any, Callable
 class Erros:
     @classmethod
     def err(cls, resp: requests.Response) -> str | None: # if the return is None that means doesn't have any error!
-        soup = YADSL.bs4(resp)
+        soup = ADSL.bs4(resp)
         if "Invalid username or password!" in soup.text.strip():
             return "خطأ في اسم المستخدم أو كلمة مرور!"
         elif (err := soup.find("span", id="ctl00_ContentPlaceHolder1_labErr")) is not None and err.text.strip():
@@ -65,7 +65,7 @@ class Payload:
         return self._data
 
 
-class YADSL:
+class ADSL:
     URL = "https://adsl.yemen.net.ye"
 
     def __init__(self, 
@@ -114,43 +114,45 @@ class YADSL:
         _post = _request(lambda: self._session.post(self._login_url, data=self._payload.data, allow_redirects=True))
         return _post.status_code
 
+    def replace_exception(self, func: Callable) -> Any | None:
+        try:
+            return func()
+        except Exception:
+            pass
+
     def verify(self, captcha: str) -> tuple[requests.Response, str | None]:
         self._payload.set_captcha(captcha)
         resp = self._session.post(self._login_url, data=self._payload.data)
-        return (self.parse_data(resp), Erros.err(resp))
+        return (self.replace_exception(lambda: self.parse_data(resp)), Erros.err(resp))
 
     def parse_data(self, resp: requests.Response) -> dict[str, str]:
-        try:
-            resp_soup = self.bs4(resp)
+        resp_soup = self.bs4(resp)
 
-            name = resp_soup.find("span", id="ctl00_labWelcome").text.strip()
+        name = resp_soup.find("span", id="ctl00_labWelcome").text.strip()
 
-            labels = resp_soup.find_all("td", class_="td_mc")
-            values = resp_soup.find_all("span", attrs={"id": re.compile(r"ctl00_ContentPlaceHolder1_\d+")})
+        labels = resp_soup.find_all("td", class_="td_mc")
+        values = resp_soup.find_all("span", attrs={"id": re.compile(r"ctl00_ContentPlaceHolder1_\d+")})
 
-            data = {}
-            data["account_status"] = values.pop(2).text.strip() == "حساب نشط"
-            data["valid_credit"] = values.pop(-2).text.strip()
+        data = {}
+        data["account_status"] = values.pop(2).text.strip() == "حساب نشط"
+        data["valid_credit"] = values.pop(-2).text.strip()
 
-            labels.pop(2)
-            labels.pop(-2)
+        labels.pop(2)
+        labels.pop(-2)
 
-            data["name"] = name.split(":")[-1].strip()
-            data.update(
-                {
-                    k.text.strip(): v.text.strip()
-                    for k, v in zip(labels, values)
-                }
-            )
-            return data
-        except Exception:
-            pass
+        data["name"] = name.split(":")[-1].strip()
+        data.update(
+            {
+                k.text.strip(): v.text.strip()
+                for k, v in zip(labels, values)
+            }
+        )
+        return data
 
     def fetch_data(self, cookies: dict = None) -> dict:
         self.clear_cookies()
         if cookies is not None:
             self.set_cookies(cookies)
-
         return self.parse_data(self._session.get(self._user_url))
 
     def fetch_captcha(self) -> bytes:

@@ -22,7 +22,7 @@ class ListTile(ft.ListTile):
         self.title = ft.Text(value = title, rtl=True)
         self.subtitle = ft.Text(value = subtitle, rtl=True)
         self.trailing = ft.Image(
-            src = f"assets/atype/{atype}.png",
+            src = f"/atype/{atype}.png",
             width=38,
             height=38
         )
@@ -45,23 +45,25 @@ class ListTile(ft.ListTile):
         )
     
     def _set_list_state(self, on: Callable) -> None:
-        for c in Refs.user_list.current.controls:
+        for c in Refs.users.current.controls:
             c.leading.visible = on(c)
-        Refs.user_list.current.update()
+        Refs.users.current.update()
 
     def _on_click(self, e: ft.ControlEvent) -> None:
         self._set_list_state(lambda _: False)
-        Refs.card.current.set_data(self.data)
+
+        card = Refs.cards.current.toggle_card(User.get_user(self.data).atype)
+        card.set_data(self.data)
 
     def toggle_action_buttons(self, e: ft.ControlEvent) -> None:
         self._set_list_state(lambda x: x == self)
 
     def on_delete(self, e: ft.ControlEvent) -> None:
         User.delete_user(self.data)
-        Refs.user_list.current.update_list()
+        Refs.users.current.update_list()
 
-        if Refs.user_list.current.controls:
-            Refs.card.current.set_data(Refs.user_list.current.controls[0].data)
+        if Refs.users.current.controls:
+            Refs.cards.current.set_data(Refs.users.current.controls[0].data)
 
     def on_edit(self, e: ft.ControlEvent):
         user_view_edit = UserViewEdit(self.page, self.data)
@@ -69,10 +71,8 @@ class ListTile(ft.ListTile):
 
 
 class UserListView(ft.ListView):
-    def __init__(self):
-        super().__init__(ref=Refs.user_list)
-
-        # self.vm = UserViewModel()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.spacing = 6
         self.expand = True

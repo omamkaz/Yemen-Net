@@ -32,7 +32,7 @@ class DropdownOption(ft.dropdown.Option):
         self.content = ft.Row(
             controls=[
                 ft.Image(
-                    src=f"assets/atype/{index}.png",
+                    src=f"/atype/{index}.png",
                     width=32,
                     height=32
                 ),
@@ -68,9 +68,8 @@ class UserViewBase(ft.BottomSheet):
             can_reveal_password=True
         )
 
-        self.content = ft.Container(
-            padding=ft.padding.only(left=15, right=15),
-            expand=True,
+        self.content = ft.SafeArea(
+            minimum_padding=ft.padding.only(left=15, right=15),
             content=ft.Column(
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                 controls=[
@@ -78,7 +77,7 @@ class UserViewBase(ft.BottomSheet):
                         ref=self.logo,
                         width=64,
                         height=64,
-                        src="assets/atype/0.png"
+                        src="/atype/0.png"
                     ),
                     ft.Row(
                         alignment=ft.MainAxisAlignment.CENTER,
@@ -130,13 +129,13 @@ class UserViewBase(ft.BottomSheet):
         self.page.close(self)
 
     def on_submit_done(self):
-        Refs.user_list.current.update_list()
+        Refs.users.current.update_list()
         self.close()
 
     def change_account_type(self, atype: int) -> None:
         self.password.visible = atype == 0
         self.title.current.value = ACCOUNT_TYPES[atype]
-        self.logo.current.src = f"assets/atype/{atype}.png"
+        self.logo.current.src = f"/atype/{atype}.png"
 
         self.username.value = ""
         self.password.value = "" if atype != 0 else "123456"

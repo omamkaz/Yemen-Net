@@ -4,16 +4,17 @@
 import base64
 import flet as ft
 from typing import Callable
-from ..scrapper.base import ParserError
+from ..constant import Dialogs
 
 
 class CaptchaVerify(ft.BottomSheet):
     def __init__(self, 
-                 page: ft.Page, 
-                 isp, 
+                 page: ft.Page,
+                 isp,
                  callback: Callable, 
-                 captcha_len: int = 4):
-        super().__init__(ft.Control)
+                 captcha_len: int = 4,
+                 **kwargs):
+        super().__init__(ft.Control, **kwargs)
 
         self.page = page
 
@@ -36,19 +37,12 @@ class CaptchaVerify(ft.BottomSheet):
             )
         )
 
-        self.err_msg = ft.Text(
-            size=13,
-            rtl=True,
-            color=ft.colors.RED
-        )
-
-        self.content = ft.Container(
-            padding=ft.padding.only(left=15, right=15),
+        self.content=ft.SafeArea(
+            minimum_padding=ft.padding.only(left=15, right=15),
             content=ft.Column(
                 controls=[
                     self.captcha_image,
                     self.captcha_value,
-                    self.err_msg,
                     ft.Row(
                         alignment=ft.MainAxisAlignment.END,
                         controls=[
@@ -85,23 +79,11 @@ class CaptchaVerify(ft.BottomSheet):
     def on_submit(self, e: ft.ControlEvent):
         try:
             data, err = self.isp.verify(self.captcha_value.value)
-
             if err is not None:
-                self.err_msg.value = err
-                self.err_msg.visible = True
+                self.captcha_value.error_text = err
+                self.captcha_value.update()
             else:
-                self.err_msg.visible = False
                 self.close()
                 self.callback(data)
-
-            self.err_msg.update()
-        except ParserError as err:
-            self.page.open(
-                ft.AlertDialog(
-                    icon=ft.Icon(ft.icons.ERROR, ft.colors.RED),
-                    content=ft.Text(
-                        value = str(err),
-                        text_align="center"
-                    )
-                )
-            )
+        except Exception as err:
+            Dialogs.error(err, self.page)

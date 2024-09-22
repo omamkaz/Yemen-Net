@@ -6,7 +6,6 @@ from humanize import naturalsize
 
 
 USERNAME = "omamkaz"
-REFRESH_ARROWS = ("⭭", "⇡")
 ACCOUNT_TYPES = ("Yemen Net (ADSL)", "4G LTE", "Phone")
 ABOUT_LINK_ICONS = (
     ("google", "#db4437", f"mailto:{USERNAME}@gmail.com"),
@@ -46,10 +45,6 @@ class UserData:
 
     @classmethod
     def type_1(cls, data: dict[str, str]) -> dict[str, str]:
-        return data
-
-    @classmethod
-    def type_2(cls, data: dict[str, str]) -> dict[str, str]:
         for k, v in data.items():
             if "gb" in k.lower():
                 u, _ = v.split()
@@ -57,22 +52,23 @@ class UserData:
                 data[k] = v
         return data
 
+    @classmethod
+    def type_2(cls, data: dict[str, str]) -> dict[str, str]:
+        return data
+
+
 
 class Refs:
-    card = ft.Ref[ft.Container]()
-    header = ft.Ref[ft.Container]()
-    refresh_text = ft.Ref[ft.Text]()
-    user_list = ft.Ref[ft.ListView]()
-    loader = ft.Ref[ft.ProgressRing]()
+    cards = ft.Ref[ft.Container]()
+    users = ft.Ref[ft.ListView]()
 
 
 class ThemeController:
 
     @staticmethod
-    def toggle_theme_mode(page: ft.Page) -> None:
-        page.bottom_appbar.content.controls[-1].icon = page.theme_mode + "_mode"
-        page.theme_mode = "light" if page.theme_mode == "dark" else "dark"
-        page.client_storage.set("theme_mode", page.theme_mode)
+    def toggle_theme_mode(theme_mode: str, page: ft.Page) -> None:
+        page.client_storage.set("theme_mode", theme_mode)
+        page.theme_mode = theme_mode
         page.update()
 
     @staticmethod
@@ -87,13 +83,40 @@ class ThemeController:
             )
         )
 
-        if Refs.card.current is not None:
-            Refs.card.current.content.bgcolor = color + "800"
-            Refs.card.current.update()
+        if page.controls:
+            controls = page.controls[0].content.controls[0].controls
+            controls[0].bgcolor = color
 
-        if Refs.header.current is not None:
-            Refs.header.current.bgcolor = color
-            Refs.header.current.update()
+            for c in controls[1].controls:
+                c.content.bgcolor = color + "800"
 
         page.client_storage.set("theme_color", color)
         page.update()
+
+
+class Dialogs:
+    
+    @staticmethod
+    def no_internet_connection(page: ft.Page) -> None:
+        page.open(
+            ft.AlertDialog(
+                icon=ft.Icon(ft.icons.WIFI_OFF, ft.colors.RED),
+                content=ft.Text(
+                    rtl=True,
+                    value = "لايوجد اتصال انترنت!",
+                    text_align="center"
+                )
+            )
+        )
+    
+    @staticmethod
+    def error(err: str, page: ft.Page) -> None:
+        page.open(
+            ft.AlertDialog(
+                icon=ft.Icon(ft.icons.ERROR, ft.colors.RED),
+                content=ft.Text(
+                    value = str(err),
+                    text_align="center"
+                )
+            )
+        )

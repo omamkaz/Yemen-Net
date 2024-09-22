@@ -23,7 +23,7 @@ class UserViewEdit(UserViewBase):
 
         self.password.visible = user.atype == 0
         self.title.current.value = ACCOUNT_TYPES[user.atype]
-        self.logo.current.src = f"assets/atype/{user.atype}.png"
+        self.logo.current.src = f"/atype/{user.atype}.png"
 
         self.drop_down.current.value = user.atype
 

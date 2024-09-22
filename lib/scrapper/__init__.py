@@ -2,6 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from .lte import LTE
-from .adsl import YADSL
+from .adsl import ADSL
 from .phone import Phone
 from .base import Base, ParserError
