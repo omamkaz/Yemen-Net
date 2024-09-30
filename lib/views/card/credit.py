@@ -43,10 +43,14 @@ class CardCredit(ft.Container):
         )
 
     def hide_credit_state(self):
-        self.content.controls[-1].spans[0].visible = False
+        span = self.content.controls[-1].spans[0]
+        span.visible = False
+        span.update()
 
     def show_credit_state(self):
-        self.content.controls[-1].spans[0].visible = True
+        span = self.content.controls[-1].spans[0]
+        span.visible = True
+        span.update()
 
     def _credit_state(self, value: str, color: str, prefix: str) -> None:
         span = self.content.controls[-1].spans[0]
@@ -55,7 +59,6 @@ class CardCredit(ft.Container):
         span.visible = True
 
         span.update()
-        self.update()
 
     def increment(self, value: str) -> None:
         self._credit_state(value, "green", "+")
@@ -66,7 +69,7 @@ class CardCredit(ft.Container):
     def set_credit(self, value: str):
         credit = self.content.controls[-1]
         credit.value = value
-        self.update()
+        credit.update()
 
     def set_credit_state(self, data: dict[str, str], old_data: dict[str, str]) -> None:
         def get_value(var):

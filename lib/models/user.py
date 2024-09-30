@@ -61,8 +61,8 @@ class User:
     @staticmethod
     def edit_data_and_cookies( 
         user_id: int,
-        data: dict[str, str], 
-        cookies: dict[str, str]):
+        data: dict[str, str] = None,
+        cookies: dict[str, str] = None):
 
         if (user := DBEngine.db(DBEngine.db.users.id == user_id).select().first()):
             user.data = data

@@ -41,7 +41,21 @@ class Application:
         self.page.open(user_view_new)
 
     def on_close_window(self, e = None):
-        self.page.client_storage.set("size", [self.page.window.width, self.page.window.height])
+        size: list[int] = [self.page.window.width, self.page.window.height]
+        self.page.client_storage.set("size", size)
+
+    def set_current_user(self) -> None:
+        cur_user_index: int = self.page.client_storage.get("cur_user") or 0
+        if (users := User.get_users()) and (user := users[cur_user_index]).data is not None:
+            Refs.users.current.controls[cur_user_index].selected = True
+            card = Refs.cards.current.toggle_card(user.atype)
+
+            User.edit_data_and_cookies(user.id, user.data, None)
+
+            card.set_data(user.id, True)
+            Refs.users.current.update()
+        else:
+            Refs.cards.current.toggle_card(3)
 
     def __call__(self, page: ft.Page) -> None:
         self.page = page
@@ -49,7 +63,7 @@ class Application:
         page.window.wait_until_ready_to_show = True
 
         page.title = "رصيد يمن نت"
-        page.window.icon = "/icon.png"
+        page.window.icon = "assets/icon.png"
         page.theme_mode = page.client_storage.get("theme_mode") or page.platform_brightness.name.lower()
 
         page.padding = 0
@@ -84,7 +98,7 @@ class Application:
         )
 
         ft.SystemOverlayStyle.enforce_system_status_bar_contrast = True
-        # ft.SystemOverlayStyle.enforce_system_navigation_bar_contrast = True
+        ft.SystemOverlayStyle.enforce_system_navigation_bar_contrast = True
 
         page.add(
             ft.SafeArea(
@@ -112,18 +126,4 @@ class Application:
             )
         )
 
-        if (users := User.get_users()) and (user := users[0]).data is not None:
-            Refs.users.current.controls[0].selected = True
-            Refs.users.current.update()
-
-            card = Refs.cards.current.toggle_card(user.atype)
-            card.set_data(user.id, True)
-        else:
-            Refs.cards.current.toggle_card(3)
-
-
-if __name__ == "__main__":
-    ft.app(
-        target=Application(),
-        name="رصيد يمن نت"
-    )
+        self.set_current_user()

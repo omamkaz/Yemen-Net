@@ -26,20 +26,15 @@ class ADSLCard(Card):
         self.card_title.set_title(pdata.pop("name"))
         self.card_title.set_active(pdata.pop("account_status"))
         self.card_credit.set_credit(pdata.pop("valid_credit"))
-
-        self.set_card_items(pdata)
-
         self.card_credit.set_credit_state(self._user.data, old_data)
 
+        self.set_card_items(pdata)
         self.update()
 
     def fetch_web_data(self) -> None:
         self.card_title.set_loading(True)
 
-        old_data = None
-        if self._user.data is not None:
-            old_data = self._user.data.copy()
-
+        old_data = self._user.data.copy() if self._user.data else None
         new_data = self._isp.fetch_data(self._user.cookies)
 
         User.edit_data_and_cookies(self._user_id, new_data, self._isp.get_cookies())
@@ -48,11 +43,18 @@ class ADSLCard(Card):
         self.card_title.set_loading(False)
 
     def start_captcha_verify(self) -> None:
+        old_data = self._user.data.copy() if self._user.data else None
+
         self._isp.login(
             self._user.username, 
             self._user.password
         )
-        cv = CaptchaVerify(self.page, self._isp, self.on_captcha_verify_submit, 4)
+        cv = CaptchaVerify(
+            self.page, 
+            self._isp, 
+            lambda data: self.on_captcha_verify_submit(data, old_data), 
+            4
+        )
         cv.open_dialog()
 
     def login_web(self) -> None:
@@ -72,7 +74,11 @@ class ADSLCard(Card):
 
         self.card_title.set_loading(False)
 
-    def on_captcha_verify_submit(self, data: dict[str, str], old_data: dict[str, str] = None) -> None:
+    def on_captcha_verify_submit(
+            self, 
+            data: dict[str, str], 
+            old_data: dict[str, str]
+            ) -> None:
         User.edit_data_and_cookies(self._user_id, data, self._isp.get_cookies())
         self.set_card_data(old_data)
 
@@ -90,13 +96,10 @@ class LTECard(Card):
         self.card_title.set_title(self._user.username)
         self.card_title.set_subtitle(self._user.dname)
         self.card_title.set_logo(self._user.atype)
-
         self.card_credit.set_credit(pdata.pop("valid_credit"))
-
-        self.set_card_items(pdata)
-
         self.card_credit.set_credit_state(self._user.data, old_data)
 
+        self.set_card_items(pdata)
         self.update()
 
     def login_web(self) -> None:
@@ -104,7 +107,7 @@ class LTECard(Card):
         self._isp = LTE()
 
         try:
-            old_data = self._user.data
+            old_data = self._user.data.copy() if self._user.data else None
             self._isp.login(self._user.username)
 
             cv = CaptchaVerify(
@@ -123,7 +126,10 @@ class LTECard(Card):
 
         self.card_title.set_loading(False)
 
-    def on_captcha_verify_submit(self, data: dict[str, str], old_data: dict[str, str] = None) -> None:
+    def on_captcha_verify_submit(
+            self, 
+            data: dict[str, str], 
+            old_data: dict[str, str] = None) -> None:
         User.edit_data_and_cookies(self._user_id, data, None)
         self.set_card_data(old_data)
 
@@ -134,7 +140,6 @@ class PhoneCard(Card):
         super().__init__(page, 2, **kwargs)
 
         self.card_credit.visible = False
-
         self._isp = Phone()
 
     def set_card_data(self) -> None:

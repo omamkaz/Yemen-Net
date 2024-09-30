@@ -11,6 +11,7 @@ from .user_edit import UserViewEdit
 class ListTile(ft.ListTile):
     def __init__(self,
                  page: ft.Page,
+                 index: int,
                  atype: int,
                  title: str,
                  subtitle: str,
@@ -18,6 +19,7 @@ class ListTile(ft.ListTile):
                  **kwargs):
         super().__init__(**kwargs)
 
+        self._index = index
         self.page = page
 
         self.on_click = self._on_click
@@ -76,9 +78,10 @@ class ListTile(ft.ListTile):
 
     def _on_click(self, e: ft.ControlEvent) -> None:
         self.set_list_state(lambda _: False)
-
         card = Refs.cards.current.toggle_card(User.get_user(self.data).atype)
         card.set_data(self.data)
+
+        self.page.client_storage.set("cur_user", self._index - 1)
 
     def toggle_action_buttons(self, e: ft.ControlEvent) -> None:
         self.set_list_state(lambda x: x == self)
@@ -115,6 +118,7 @@ class UserListView(ft.ListView):
     def new_item(self, index: int, user) -> ListTile:
         return ListTile(
             self.page,
+            index,
             user.atype,
             user.dname or f"حساب رقم {index}",
             user.username,

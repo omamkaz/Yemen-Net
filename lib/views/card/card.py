@@ -34,7 +34,6 @@ class Card(ft.GestureDetector):
                 border_radius=14,
                 alignment=ft.alignment.center,
                 animate=ft.Animation(200, ft.AnimationCurve.LINEAR_TO_EASE_OUT),
-                # bgcolor=self.page.theme.color_scheme_seed + "800",
                 bgcolor=ThemeController.get_color(self.page.theme.color_scheme_seed, 800),
                 shadow=ft.BoxShadow(
                     spread_radius=-10,
@@ -78,7 +77,7 @@ class Card(ft.GestureDetector):
 
     def _on_pan_update(self, e: ft.DragUpdateEvent) -> None:
         if self.content.margin.top < (25 + 8) and e.delta_y >= 0:
-            self.content.margin.top += min(0.8, e.delta_y) * 5 # 0.5
+            self.content.margin.top += min(0.8, e.delta_y) * 5
             self.content.update()
 
     def _on_pan_end(self, e: ft.DragEndEvent) -> None:
