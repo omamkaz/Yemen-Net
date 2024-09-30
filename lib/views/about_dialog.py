@@ -71,7 +71,7 @@ class AboutDialog(ft.BottomSheet):
                         fit="cover"
                     )
                 ),
-                ft.Text("Osama Mohammed Al-zabidi", size=14),
+                ft.Text("Osama Mohammed AL-Zabidi", size=14),
                 ft.Text(
                     "Software Developer | Python Programming | GUI & Web Apps",
                     weight="w400",
@@ -100,7 +100,7 @@ class AboutDialog(ft.BottomSheet):
                     alignment=ft.alignment.center,
                     margin=ft.margin.only(right=10, bottom=10),
                     content=ft.Text(
-                        value="v4.0.0",
+                        value="v5.0.0",
                         weight=ft.FontWeight.BOLD,
                         font_family="Monospace",
                         text_align="center",
