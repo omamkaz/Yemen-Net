@@ -86,22 +86,14 @@ jobs:
         --project="$PROJECT" \
         --flutter-build-args=--release \
         --flutter-build-args=--split-per-abi \
-        --flutter-build-args=--android-project-arg \
-        --flutter-build-args="ndk.abiFilters=" \
-        --flutter-build-args=--android-project-arg \
-        --flutter-build-args="android.ndk.abiFilters=" \
-        --flutter-build-args=--android-project-arg \
-        --flutter-build-args="android.buildTypes.release.ndk.abiFilters=" \
-        --flutter-build-args=--android-project-arg \
-        --flutter-build-args="android.splits.abi.reset=true" \
-        --flutter-build-args=--android-project-arg \
-        --flutter-build-args="android.defaultConfig.ndk.abiFilters=" \
-        --flutter-build-args=--android-project-arg \
-        --flutter-build-args="android.splits.abi.enable=true" \
-        --flutter-build-args=--android-project-arg \
-        --flutter-build-args="include=$BUILD_ARCH" \
-        --flutter-build-args=--android-project-arg \
-        --flutter-build-args="universalApk=false"
+        --flutter-build-args="-Pndk.abiFilters=" \
+        --flutter-build-args="-Pandroid.ndk.abiFilters=" \
+        --flutter-build-args="-Pandroid.buildTypes.release.ndk.abiFilters=" \
+        --flutter-build-args="-Pandroid.defaultConfig.ndk.abiFilters=" \
+        --flutter-build-args="-Pandroid.splits.abi.reset=true" \
+        --flutter-build-args="-Pandroid.splits.abi.enable=true" \
+        --flutter-build-args="-Pandroid.splits.abi.include=$BUILD_ARCH" \
+        --flutter-build-args="-Pandroid.splits.abi.universalApk=false"
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4.3.4
