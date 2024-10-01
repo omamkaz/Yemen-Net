@@ -5,12 +5,12 @@ on:
 
 env:
   # https://flet.dev/docs/publish#versioning
-  BUILD_NUMBER: 1727725681
+  BUILD_NUMBER: 1727793004
   BUILD_VERSION: 5.0.0
   PYTHON_VERSION: 3.12.5 #3.12.5
   FLUTTER_VERSION: 3.24.3 # 3.22.5, 3.24.5
   ANDROID_PLATFORM_TARGET: 'arm64' # arm, arm64, x64, x86
-  BUILD_ARCH: 'armeabi-v7a' # arm64-v8a
+  BUILD_ARCH: 'arm64-v8a' # armeabi-v7a, arm64-v8a, x64, x86
   
   PROJECT: 'Yemen Net'
   COMPANY_NAME: 'omamkaz'
@@ -87,7 +87,7 @@ jobs:
         --flutter-build-args=--release \
         --flutter-build-args=--analyze-size \
         --flutter-build-args=--target-platform \
-        --flutter-build-args=android-arm \
+        --flutter-build-args=android-$ANDROID_PLATFORM_TARGET \
         --flutter-build-args=--android-project-arg \
         --flutter-build-args=android.ndk.abiFilters=$BUILD_ARCH \
         --flutter-build-args=--android-project-arg \
