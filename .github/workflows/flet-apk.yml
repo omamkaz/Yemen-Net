@@ -10,7 +10,7 @@ env:
   PYTHON_VERSION: 3.12.5 #3.12.5
   FLUTTER_VERSION: 3.24.3 # 3.22.5, 3.24.5
   ANDROID_PLATFORM_TARGET: 'arm64' # arm, arm64, x64, x86
-  BUILD_ARCH: 'armeabi-v7a, arm64-v8a' # armeabi-v7a, arm64-v8a, x64, x86
+  BUILD_ARCH: 'armeabi-v7a,arm64-v8a' # armeabi-v7a, arm64-v8a, x64, x86
   
   PROJECT: 'Yemen Net'
   COMPANY_NAME: 'omamkaz'
@@ -90,12 +90,16 @@ jobs:
         --flutter-build-args="android.ndk.abiFilters=$BUILD_ARCH" \
         --flutter-build-args=--android-project-arg \
         --flutter-build-args="android.buildTypes.release.ndk.abiFilters=$BUILD_ARCH" \
+
+        --flutter-build-args=--android-project-arg \
+        --flutter-build-args="android.splits.abi.reset=true" \
+
         --flutter-build-args=--android-project-arg \
         --flutter-build-args="android.defaultConfig.ndk.abiFilters=$BUILD_ARCH" \
         --flutter-build-args=--android-project-arg \
         --flutter-build-args="android.splits.abi.enable=true" \
         --flutter-build-args=--android-project-arg \
-        --flutter-build-args="include='armeabi-v7a', 'arm64-v8a'" \
+        --flutter-build-args="include=$BUILD_ARCH" \
         --flutter-build-args=--android-project-arg \
         --flutter-build-args="universalApk=false"
 
