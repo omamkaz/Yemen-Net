@@ -87,6 +87,8 @@ jobs:
         --flutter-build-args=--release \
         --flutter-build-args=--split-per-abi \
         --flutter-build-args=--android-project-arg \
+        --flutter-build-args="ndk.abiFilters=" \
+        --flutter-build-args=--android-project-arg \
         --flutter-build-args="android.ndk.abiFilters=" \
         --flutter-build-args=--android-project-arg \
         --flutter-build-args="android.buildTypes.release.ndk.abiFilters=" \
