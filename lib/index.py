@@ -49,9 +49,6 @@ class Application:
         if (users := User.get_users()) and (user := users[cur_user_index]).data is not None:
             Refs.users.current.controls[cur_user_index].selected = True
             card = Refs.cards.current.toggle_card(user.atype)
-
-            User.edit_data_and_cookies(user.id, user.data, None)
-
             card.set_data(user.id, True)
             Refs.users.current.update()
         else:

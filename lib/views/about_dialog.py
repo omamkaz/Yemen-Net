@@ -55,57 +55,59 @@ class AboutDialog(ft.BottomSheet):
         self.enable_drag = True
         self.show_drag_handle = True
 
-        self.content = ft.Column(
-            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-            horizontal_alignment="center",
-            controls=[
-                ft.Text(
-                    value="عن المطور"
-                ),
-                ft.Container(
-                    width=64,
-                    height=64,
-                    shape=ft.BoxShape("circle"),
-                    image = ft.DecorationImage(
-                        src="assets/me.jpg",
-                        fit="cover"
-                    )
-                ),
-                ft.Text("Osama Mohammed AL-Zabidi", size=14),
-                ft.Text(
-                    "Software Developer | Python Programming | GUI & Web Apps",
-                    weight="w400",
-                    text_align="center",
-                    size=10
-                ),
-                ft.Container(
-                    margin=ft.margin.only(10, 20, 10),
-                    content=ft.Column(
-                        spacing=16,
-                        controls=[
-                            Link("Username", "@omamkaz"),
-                            ft.Row(
-                                spacing=0,
-                                alignment=ft.MainAxisAlignment.CENTER,
-                                controls=[
-                                    LinkIcon(icon, color, link, page)
-                                    for icon, color, link in ABOUT_LINK_ICONS
-                                ]
-                            )
-                        ]
-                    )
-                ),
-
-                ft.Container(
-                    alignment=ft.alignment.center,
-                    margin=ft.margin.only(right=10, bottom=10),
-                    content=ft.Text(
-                        value="v5.0.0",
-                        weight=ft.FontWeight.BOLD,
-                        font_family="Monospace",
+        self.content = ft.SafeArea(
+            content=ft.Column(
+                alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                horizontal_alignment="center",
+                controls=[
+                    ft.Text(
+                        value="عن المطور"
+                    ),
+                    ft.Container(
+                        width=64,
+                        height=64,
+                        shape=ft.BoxShape("circle"),
+                        image = ft.DecorationImage(
+                            src="assets/me.jpg",
+                            fit="cover"
+                        )
+                    ),
+                    ft.Text("Osama Mohammed AL-Zabidi", size=14),
+                    ft.Text(
+                        "Software Developer | Python Programming | GUI & Web Apps",
+                        weight="w400",
                         text_align="center",
-                        size=13
+                        size=10
+                    ),
+                    ft.Container(
+                        margin=ft.margin.only(10, 20, 10),
+                        content=ft.Column(
+                            spacing=16,
+                            controls=[
+                                Link("Username", "@omamkaz"),
+                                ft.Row(
+                                    spacing=0,
+                                    alignment=ft.MainAxisAlignment.CENTER,
+                                    controls=[
+                                        LinkIcon(icon, color, link, page)
+                                        for icon, color, link in ABOUT_LINK_ICONS
+                                    ]
+                                )
+                            ]
+                        )
+                    ),
+
+                    ft.Container(
+                        alignment=ft.alignment.center,
+                        margin=ft.margin.only(right=10, bottom=10),
+                        content=ft.Text(
+                            value="v5.0.0",
+                            weight=ft.FontWeight.BOLD,
+                            font_family="Monospace",
+                            text_align="center",
+                            size=13
+                        )
                     )
-                )
-            ]
+                ]
+            )
         )
