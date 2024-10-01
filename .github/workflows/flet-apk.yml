@@ -10,7 +10,7 @@ env:
   PYTHON_VERSION: 3.12.5 #3.12.5
   FLUTTER_VERSION: 3.24.3 # 3.22.5, 3.24.5
   ANDROID_PLATFORM_TARGET: 'arm64' # arm, arm64, x64, x86
-  BUILD_ARCH: 'arm64-v8a' # armeabi-v7a, arm64-v8a, x64, x86
+  BUILD_ARCH: 'armeabi-v7a, arm64-v8a' # armeabi-v7a, arm64-v8a, x64, x86
   
   PROJECT: 'Yemen Net'
   COMPANY_NAME: 'omamkaz'
@@ -85,20 +85,24 @@ jobs:
         --description="$DESCRIPTION" \
         --project="$PROJECT" \
         --flutter-build-args=--release \
-        --flutter-build-args=--analyze-size \
-        --flutter-build-args=--target-platform \
-        --flutter-build-args=android-$ANDROID_PLATFORM_TARGET \
+        --flutter-build-args=--split-per-abi \
         --flutter-build-args=--android-project-arg \
-        --flutter-build-args=android.ndk.abiFilters=$BUILD_ARCH \
+        --flutter-build-args="android.ndk.abiFilters=$BUILD_ARCH" \
         --flutter-build-args=--android-project-arg \
-        --flutter-build-args=android.buildTypes.release.ndk.abiFilters=$BUILD_ARCH \
+        --flutter-build-args="android.buildTypes.release.ndk.abiFilters=$BUILD_ARCH" \
         --flutter-build-args=--android-project-arg \
-        --flutter-build-args=android.defaultConfig.ndk.abiFilters=$BUILD_ARCH
+        --flutter-build-args="android.defaultConfig.ndk.abiFilters=$BUILD_ARCH" \
+        --flutter-build-args=--android-project-arg \
+        --flutter-build-args="android.splits.abi.enable=true" \
+        --flutter-build-args=--android-project-arg \
+        --flutter-build-args="include='armeabi-v7a', 'arm64-v8a'" \
+        --flutter-build-args=--android-project-arg \
+        --flutter-build-args="universalApk=false"
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4.3.4
       with:
         name: apk-build-artifact
-        path: build/apk
+        path: build/
         if-no-files-found: warn
         overwrite: false
