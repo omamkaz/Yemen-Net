@@ -5,7 +5,7 @@ on:
 
 env:
   # https://flet.dev/docs/publish#versioning
-  BUILD_NUMBER: 1727793004
+  BUILD_NUMBER: 1727799481
   BUILD_VERSION: 5.0.0
   PYTHON_VERSION: 3.12.5 #3.12.5
   FLUTTER_VERSION: 3.24.3 # 3.22.5, 3.24.5
@@ -85,23 +85,9 @@ jobs:
         --description="$DESCRIPTION" \
         --project="$PROJECT" \
         --flutter-build-args=--release \
-        --flutter-build-args=--split-per-abi \
-        --flutter-build-args="-P" \
-        --flutter-build-args="ndk.abiFilters=" \
-        --flutter-build-args="-P" \
-        --flutter-build-args="android.ndk.abiFilters=" \
-        --flutter-build-args="-P" \
-        --flutter-build-args="android.buildTypes.release.ndk.abiFilters=" \
-        --flutter-build-args="-P" \
-        --flutter-build-args="android.defaultConfig.ndk.abiFilters=" \
-        --flutter-build-args="-P" \
-        --flutter-build-args="android.splits.abi.reset=true" \
-        --flutter-build-args="-P" \
-        --flutter-build-args="android.splits.abi.enable=true" \
-        --flutter-build-args="-P" \
-        --flutter-build-args="android.splits.abi.include=$BUILD_ARCH" \
-        --flutter-build-args="-P" \
-        --flutter-build-args="android.splits.abi.universalApk=false"
+        --flutter-build-args=--analyze-size \
+        --flutter-build-args=--target-platform \
+        --flutter-build-args=android-arm64
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4.3.4
