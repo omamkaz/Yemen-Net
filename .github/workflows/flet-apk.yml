@@ -87,15 +87,13 @@ jobs:
         --flutter-build-args=--release \
         --flutter-build-args=--split-per-abi \
         --flutter-build-args=--android-project-arg \
-        --flutter-build-args="android.ndk.abiFilters=$BUILD_ARCH" \
+        --flutter-build-args="android.ndk.abiFilters=" \
         --flutter-build-args=--android-project-arg \
-        --flutter-build-args="android.buildTypes.release.ndk.abiFilters=$BUILD_ARCH" \
-
+        --flutter-build-args="android.buildTypes.release.ndk.abiFilters=" \
         --flutter-build-args=--android-project-arg \
         --flutter-build-args="android.splits.abi.reset=true" \
-
         --flutter-build-args=--android-project-arg \
-        --flutter-build-args="android.defaultConfig.ndk.abiFilters=$BUILD_ARCH" \
+        --flutter-build-args="android.defaultConfig.ndk.abiFilters=" \
         --flutter-build-args=--android-project-arg \
         --flutter-build-args="android.splits.abi.enable=true" \
         --flutter-build-args=--android-project-arg \
