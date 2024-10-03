@@ -5,7 +5,7 @@ on:
 
 env:
   # https://flet.dev/docs/publish#versioning
-  BUILD_NUMBER: 1727986621
+  BUILD_NUMBER: 1727990041
   BUILD_VERSION: 6.0.0
   PYTHON_VERSION: 3.12.5 #3.12.5
   FLUTTER_VERSION: 3.24.3 # 3.22.5, 3.24.5
@@ -17,6 +17,10 @@ env:
   ORG_NAME: 'com.omamkaz'
   PRODUCT: رصيد يمن نت
   DESCRIPTION: الاستعلام من رصيد يمن نت, بالأضافة الى بعض الخدمات و الاضافات الاخرى
+
+  # --flutter-build-args=--analyze-size \
+  # --flutter-build-args=--target-platform \
+  # --flutter-build-args=android-arm64
 
 jobs:
   build-apk:
@@ -74,7 +78,7 @@ jobs:
       run: |
         flutter doctor
         flutter config --no-analytics
-        flet build apk \
+        flet build aab \
         --include-packages flet_lottie \
         --verbose \
         --build-number=$BUILD_NUMBER \
@@ -84,10 +88,7 @@ jobs:
         --product="$PRODUCT" \
         --description="$DESCRIPTION" \
         --project="$PROJECT" \
-        --flutter-build-args=--release \
-        --flutter-build-args=--analyze-size \
-        --flutter-build-args=--target-platform \
-        --flutter-build-args=android-arm64
+        --flutter-build-args=--release
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4.3.4
