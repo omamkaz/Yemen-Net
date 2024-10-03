@@ -2,180 +2,37 @@
 # -*- coding: utf-8 -*-
 
 import flet as ft
-import requests
 from .card import Card
-from ..models.user import User
-from ..constant import UserData, Dialogs
-from ..scrapper import ADSL, LTE, Phone
-from .captcha_verify import CaptchaVerify
+from .dialogs import NewUserDialog
+from ..constant import LottieFiles
+from .atypes import ADSLCard, LTECard, PhoneCard
 
 
-class ADSLCard(Card):
+class Cards(ft.Stack):
     def __init__(self, page: ft.Page, **kwargs):
-        super().__init__(page, 0, **kwargs)
+        super().__init__(**kwargs)
+        self.page = page
 
-        self._isp = ADSL()
-
-    def set_card_data(self, old_data: dict[str, str] = None) -> None:
-
-        pdata = UserData.filter_data(self._user.data.copy(), self._user.atype)
-
-        self.card_title.set_logo(self._user.atype)
-        self.card_title.set_subtitle(self._user.username)
-
-        self.card_title.set_title(pdata.pop("name"))
-        self.card_title.set_active(pdata.pop("account_status"))
-        self.card_credit.set_credit(pdata.pop("valid_credit"))
-        self.card_credit.set_credit_state(self._user.data, old_data)
-
-        self.set_card_items(pdata)
-        self.update()
-
-    def fetch_web_data(self) -> None:
-        self.card_title.set_loading(True)
-
-        old_data = self._user.data.copy() if self._user.data else None
-        new_data = self._isp.fetch_data(self._user.cookies)
-
-        User.edit_data_and_cookies(self._user_id, new_data, self._isp.get_cookies())
-        self.set_card_data(old_data)
-
-        self.card_title.set_loading(False)
-
-    def start_captcha_verify(self) -> None:
-        old_data = self._user.data.copy() if self._user.data else None
-
-        self._isp.login(
-            self._user.username, 
-            self._user.password
-        )
-        cv = CaptchaVerify(
-            self.page, 
-            self._isp, 
-            lambda data: self.on_captcha_verify_submit(data, old_data), 
-            4
-        )
-        cv.open_dialog()
-
-    def login_web(self) -> None:
-        self.card_title.set_loading(True)
-        self._isp = ADSL()
-
-        try:
-            self.fetch_web_data()
-        except AttributeError:
-            self.start_captcha_verify()
-        except requests.exceptions.ConnectionError:
-            # No Internet Connection
-            Dialogs.no_internet_connection(self.page)
-        except Exception as err:
-            # Unknow Error!
-            Dialogs.error(err)
-
-        self.card_title.set_loading(False)
-
-    def on_captcha_verify_submit(
-            self, 
-            data: dict[str, str], 
-            old_data: dict[str, str]
-            ) -> None:
-        User.edit_data_and_cookies(self._user_id, data, self._isp.get_cookies())
-        self.set_card_data(old_data)
-
-
-
-class LTECard(Card):
-    def __init__(self, page: ft.Page, **kwargs):
-        super().__init__(page, 1, **kwargs)
-        self._isp = LTE()
-
-    def set_card_data(self, old_data: dict[str, str] = None) -> None:
-
-        pdata = UserData.filter_data(self._user.data.copy(), self._user.atype)
-
-        self.card_title.set_title(self._user.username)
-        self.card_title.set_subtitle(self._user.dname)
-        self.card_title.set_logo(self._user.atype)
-        self.card_credit.set_credit(pdata.pop("valid_credit"))
-        self.card_credit.set_credit_state(self._user.data, old_data)
-
-        self.set_card_items(pdata)
-        self.update()
-
-    def login_web(self) -> None:
-        self.card_title.set_loading(True)
-        self._isp = LTE()
-
-        try:
-            old_data = self._user.data.copy() if self._user.data else None
-            self._isp.login(self._user.username)
-
-            cv = CaptchaVerify(
-                self.page, 
-                self._isp, 
-                lambda data: self.on_captcha_verify_submit(data, old_data), 
-                5
+        self.controls = [
+            ADSLCard(page, visible=False),
+            LTECard(page, visible=False),
+            PhoneCard(page, visible=False),
+            ft.Container(
+                ft.Lottie(
+                    fit=ft.ImageFit.COVER,
+                    src_base64=LottieFiles.online_health_report
+                ),
+                on_click=lambda e: self.open_new_user_dialog(self.page)
             )
-            cv.open_dialog()
-        except requests.exceptions.ConnectionError:
-            # No Internet Connection
-            Dialogs.no_internet_connection(self.page)
-        except Exception as err:
-            # Unknow Error!
-            Dialogs.error(err)
+        ]
 
-        self.card_title.set_loading(False)
-
-    def on_captcha_verify_submit(
-            self, 
-            data: dict[str, str], 
-            old_data: dict[str, str] = None) -> None:
-        User.edit_data_and_cookies(self._user_id, data, None)
-        self.set_card_data(old_data)
-
-
-
-class PhoneCard(Card):
-    def __init__(self, page: ft.Page, **kwargs):
-        super().__init__(page, 2, **kwargs)
-
-        self.card_credit.visible = False
-        self._isp = Phone()
-
-    def set_card_data(self) -> None:
-        self.card_title.set_logo(self._user.atype)
-        self.card_title.set_title(self._user.username)
-        self.card_title.set_subtitle(self._user.dname)
-
-        self.set_card_items(self._user.data)
+    def toggle_card(self, atype: int | str = 3) -> Card:
+        for i, c in enumerate(self.controls):
+            c.visible = (i == int(atype))
         self.update()
+        return self.controls[int(atype)]
 
-    def login_web(self) -> None:
-        self.card_title.set_loading(True)
-        self._isp = Phone()
-
-        try:
-            self._isp.login(self._user.username)
-            cv = CaptchaVerify(
-                self.page, 
-                self._isp,
-                lambda data: self.on_captcha_verify_submit(data), 
-                5
-            )
-            cv.open_dialog()
-        except requests.exceptions.ConnectionError:
-            # No Internet Connection
-            Dialogs.no_internet_connection(self.page)
-        except Exception as err:
-            # Unknow Error!
-            Dialogs.error(err)
-
-        self.card_title.set_loading(False)
-
-    def on_captcha_verify_submit(self, data: dict[str, str]) -> None:
-        User.edit_data_and_cookies(self._user_id, data, None)
-        self.set_card_data()
-
-    @property
-    def card_height(self) -> int:
-        return 200
+    @classmethod
+    def open_new_user_dialog(cls, page: ft.Page) -> None:
+        user_view_new = NewUserDialog(page)
+        page.open(user_view_new)

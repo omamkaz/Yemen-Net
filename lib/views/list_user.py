@@ -2,10 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import flet as ft
-from typing import Callable
 from ..constant import Refs
 from ..models.user import User
-from .user_edit import UserViewEdit
+from .dialogs import EditUserDialog
 
 
 class ListTile(ft.ListTile):
@@ -23,13 +22,11 @@ class ListTile(ft.ListTile):
         self.page = page
 
         self.on_click = self._on_click
-        self.on_long_press = self.toggle_action_buttons
 
         self.title = ft.Text(value = title, rtl=True)
         self.subtitle = ft.Text(value = subtitle, rtl=True)
 
         self.trailing = ft.Stack(
-            expand=True,
             alignment=ft.alignment.bottom_right,
             controls=[
                 ft.Image(
@@ -46,22 +43,21 @@ class ListTile(ft.ListTile):
             ]
         )
 
-        self.leading = ft.Row(
-            controls=[
-                ft.IconButton(
-                    icon=ft.icons.DELETE,
-                    icon_color=ft.colors.RED_500,
-                    on_click=self.on_delete
-                ),
-                ft.IconButton(
+        self.leading = ft.PopupMenuButton(
+            # menu_position=ft.PopupMenuPosition.OVER,
+            tooltip="خيارات اخرى",
+            items=[
+                ft.PopupMenuItem(
+                    text="تعديل",
                     icon=ft.icons.EDIT,
                     on_click=self.on_edit
+                ),
+                ft.PopupMenuItem(
+                    text="حذف",
+                    icon=ft.icons.DELETE,
+                    on_click=self.on_delete
                 )
-            ],
-            alignment=ft.MainAxisAlignment.START,
-            width=70,
-            spacing=0,
-            visible=False
+            ]
         )
 
         self.set_selected_color()
@@ -69,22 +65,16 @@ class ListTile(ft.ListTile):
     def set_selected_color(self):
         self.selected_tile_color = ft.colors.with_opacity(0.09, self.page.theme.color_scheme_seed)
 
-    def set_list_state(self, on: Callable) -> None:
+    def set_list_state(self) -> None:
         self.set_selected_color()
         for c in Refs.users.current.controls:
             c.selected = c == self
-            c.leading.visible = on(c)
         Refs.users.current.update()
 
     def _on_click(self, e: ft.ControlEvent) -> None:
-        self.set_list_state(lambda _: False)
-        card = Refs.cards.current.toggle_card(User.get_user(self.data).atype)
-        card.set_data(self.data)
-
         self.page.client_storage.set("cur_user", self._index - 1)
-
-    def toggle_action_buttons(self, e: ft.ControlEvent) -> None:
-        self.set_list_state(lambda x: x == self)
+        Refs.cards.current.toggle_card(User.get_user(self.data).atype).set_data(self.data)
+        self.set_list_state()
 
     def on_delete(self, e: ft.ControlEvent) -> None:
         User.delete_user(self.data)
@@ -97,7 +87,7 @@ class ListTile(ft.ListTile):
             Refs.cards.current.toggle_card(3)
 
     def on_edit(self, e: ft.ControlEvent):
-        user_view_edit = UserViewEdit(self.page, self.data)
+        user_view_edit = EditUserDialog(self.page, self.data)
         self.page.open(user_view_edit)
 
 

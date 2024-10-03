@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import flet as ft
-from .about_dialog import AboutDialog
-from .theme_dialog import ThemeDialog
+from .dialogs import AboutDialog
+from .dialogs import ThemeDialog
 from ..constant import THEME_COLORS
 
 
@@ -38,6 +38,6 @@ class BottomAppBar(ft.BottomAppBar):
     def open_theme_dialog(self, e: ft.ControlEvent) -> None:
         theme = ThemeDialog(self.page)
         self.page.open(theme)
-        theme.content.controls[-1].content.scroll_to(
+        theme.content.content.controls[-1].content.scroll_to(
             key=self.page.client_storage.get("theme_color") or THEME_COLORS[0]
         )
