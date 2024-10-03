@@ -5,8 +5,8 @@ on:
 
 env:
   # https://flet.dev/docs/publish#versioning
-  BUILD_NUMBER: 1727800982
-  BUILD_VERSION: 5.0.0
+  BUILD_NUMBER: 1727986621
+  BUILD_VERSION: 6.0.0
   PYTHON_VERSION: 3.12.5 #3.12.5
   FLUTTER_VERSION: 3.24.3 # 3.22.5, 3.24.5
   ANDROID_PLATFORM_TARGET: 'arm64' # arm, arm64, x64, x86
