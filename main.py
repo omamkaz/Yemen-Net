@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import os
 import flet as ft
-from lib.index import Application
+import os.path
+from lib.views.app import Application
 from lib.models.base import DBEngine
 
 
@@ -16,4 +16,7 @@ if __name__ == "__main__":
     DBEngine.init_db()
     DBEngine.init_tables()
 
-    ft.app(target=Application())
+    ft.app(
+        target=Application(),
+        name="رصيد يمن نت"
+    )
