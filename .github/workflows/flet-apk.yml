@@ -67,8 +67,8 @@ jobs:
         java-version: '21'
         #architecture: 'aarch64'
 
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
+    # - name: Setup Android SDK
+    #   uses: android-actions/setup-android@v3
 
     - name: Flet Build APK
       run: |
