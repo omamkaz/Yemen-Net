@@ -14,7 +14,7 @@ env:
   
   PROJECT: 'Yemen Net'
   COMPANY_NAME: 'omamkaz'
-  ORG_NAME: 'com.omamkaz.yemennet'
+  ORG_NAME: 'com.omamkaz'
   PRODUCT: 'رصيد يمن نت'
   DESCRIPTION: 'الاستعلام من رصيد يمن نت, بالأضافة الى بعض الخدمات و الاضافات الاخرى'
 
@@ -74,7 +74,7 @@ jobs:
       run: |
         flutter doctor
         flutter config --no-analytics
-        flet build aab \
+        flet build apk \
         --include-packages flet_lottie \
         --verbose \
         --build-number=$BUILD_NUMBER \
