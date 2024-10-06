@@ -8,7 +8,7 @@ env:
   BUILD_NUMBER: 1728234841
   BUILD_VERSION: 7.0.0
   PYTHON_VERSION: 3.12.5 #3.12.5
-  FLUTTER_VERSION: 3.24.3 # 3.22.5, 3.24.5
+  FLUTTER_VERSION: 3.24 # 3.22.5, 3.24.5
   ANDROID_PLATFORM_TARGET: 'arm64' # arm, arm64, x64, x86
   BUILD_ARCH: 'armeabi-v7a,arm64-v8a' # armeabi-v7a, arm64-v8a, x64, x86
   
