@@ -40,10 +40,7 @@ class ADSLCard(Card):
     def start_captcha_verify(self) -> None:
         old_data = self._user.data.copy() if self._user.data else None
 
-        self._isp.login(
-            self._user.username, 
-            self._user.password
-        )
+        self._isp.login(self._user.username, self._user.password)
         cv = CaptchaVerifyDialog(
             self.page, 
             self._isp, 
@@ -68,7 +65,3 @@ class ADSLCard(Card):
 
     def on_captcha_verify_submit(self, data: dict[str, str], old_data: dict[str, str]) -> None:
         super().on_captcha_verify_submit(0, data, old_data, self._isp.get_cookies())
-
-        # User.edit_data_and_cookies(self._user_id, data, self._isp.get_cookies())
-        # self.set_card_data(old_data)
-        # Refs.cards.current.toggle_card(0)

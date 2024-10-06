@@ -50,7 +50,3 @@ class LTECard(Card):
 
     def on_captcha_verify_submit(self, data: dict[str, str], old_data: dict[str, str] = None) -> None:
         super().on_captcha_verify_submit(1, data, old_data, None)
-
-        # User.edit_data_and_cookies(self._user_id, data, None)
-        # self.set_card_data(old_data)
-        # Refs.cards.current.toggle_card(1)

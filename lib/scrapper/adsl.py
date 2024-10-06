@@ -111,7 +111,10 @@ class ADSL:
         _request(lambda: self._session.get(self._login_url, timeout=self._timeout))
 
         ## Login POST
-        _post = _request(lambda: self._session.post(self._login_url, self._payload.data, allow_redirects=True, timeout=self._timeout))
+        _post = _request(lambda: self._session.post(self._login_url, 
+                                                    self._payload.data, 
+                                                    allow_redirects=True, 
+                                                    timeout=self._timeout))
         return _post.status_code
 
     def replace_exception(self, func: Callable) -> Any | None:
@@ -122,25 +125,25 @@ class ADSL:
 
     def verify(self, captcha: str) -> tuple[requests.Response, str | None]:
         self._payload.set_captcha(captcha)
-        resp = self._session.post(self._login_url, data=self._payload.data)
+        resp = self._session.post(self._login_url, data=self._payload.data, timeout=self._timeout)
         return (self.replace_exception(lambda: self.parse_data(resp)), Erros.err(resp))
 
     def parse_data(self, resp: requests.Response) -> dict[str, str]:
         resp_soup = self.bs4(resp)
 
         name = resp_soup.find("span", id="ctl00_labWelcome").text.strip()
-
         labels = resp_soup.find_all("td", class_="td_mc")
         values = resp_soup.find_all("span", attrs={"id": re.compile(r"ctl00_ContentPlaceHolder1_\d+")})
 
-        data = {}
-        data["account_status"] = values.pop(2).text.strip() == "حساب نشط"
-        data["valid_credit"] = values.pop(-2).text.strip()
+        data = {
+            "name": name.split(":")[-1].strip(),
+            "account_status": values.pop(2).text.strip() == "حساب نشط",
+            "valid_credit": values.pop(-2).text.strip()
+        }
 
         labels.pop(2)
         labels.pop(-2)
 
-        data["name"] = name.split(":")[-1].strip()
         data.update(
             {
                 k.text.strip(): v.text.strip()
@@ -156,7 +159,7 @@ class ADSL:
         return self.parse_data(self._session.get(self._user_url, timeout=self._timeout))
 
     def fetch_captcha(self) -> bytes:
-        return self._session.get(self._captcha_url, timeout=self._timeout).content
+        return self._session.get(self._captcha_url).content
 
     def get_cookies(self) -> dict:
         return requests.utils.dict_from_cookiejar(self._session.cookies)

@@ -47,10 +47,6 @@ class PhoneCard(Card):
     def on_captcha_verify_submit(self, data: dict[str, str]) -> None:
         super().on_captcha_verify_submit(2, data, None, None)
 
-        # User.edit_data_and_cookies(self._user_id, data, None)
-        # self.set_card_data()
-        # Refs.cards.current.toggle_card(2)
-
     @property
     def card_height(self) -> int:
         return 200
