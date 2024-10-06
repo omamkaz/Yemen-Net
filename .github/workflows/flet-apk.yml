@@ -79,11 +79,11 @@ jobs:
         --verbose \
         --build-number=$BUILD_NUMBER \
         --build-version=$BUILD_VERSION \
-        --company=$COMPANY_NAME \
-        --org=$ORG_NAME \
-        --product=$PRODUCT \
-        --description=$DESCRIPTION \
-        --project=$PROJECT \
+        --company="$COMPANY_NAME" \
+        --org="$ORG_NAME" \
+        --product="$PRODUCT" \
+        --description="$DESCRIPTION" \
+        --project="$PROJECT" \
         --flutter-build-args=--release \
         --flutter-build-args=--analyze-size \
         --flutter-build-args=--target-platform \
