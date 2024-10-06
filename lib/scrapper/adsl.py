@@ -68,9 +68,10 @@ class Payload:
 class ADSL:
     URL = "https://adsl.yemen.net.ye"
 
-    def __init__(self, 
-                 lang: str = "ar", # en|ar
-                 cookies: dict = None):
+    def __init__(
+            self, 
+            lang: str = "ar", # en|ar
+            cookies: dict = None):
 
         self._lang: str = lang
         self._timeout: int = 8

@@ -78,13 +78,12 @@ class Card(ft.GestureDetector):
     def set_data(self, user_id: int) -> None:
         self._user_id = user_id
 
-        self.set_loading(True)
-        if self._user.data is not None:
-            Refs.cards.current.toggle_card(self._user.atype)
-            self.set_card_data()
-        else:
+        if not self._user.data:
             Refs.cards.current.toggle_card(4)
-        self.set_loading(False)
+            return
+
+        Refs.cards.current.toggle_card(self._user.atype)
+        self.set_card_data()
 
     def set_login(self, user_id: int) -> None:
         self._user_id = user_id
@@ -131,8 +130,8 @@ class Card(ft.GestureDetector):
         self.page.views[0].disabled = on
         self.card_title.leading.content.src_base64 = LottieFiles.loading_carga if on else LottieFiles.down_arrow
 
-        self.card_title.leading.update()
         self.page.update()
+        self.card_title.leading.update()
 
     def is_loading(self) -> bool:
         return self.page.views[0].disabled

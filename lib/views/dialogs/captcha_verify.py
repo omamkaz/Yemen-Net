@@ -21,14 +21,15 @@ class CaptchaVerifyDialog(ft.BottomSheet):
 
         self.isp = isp
         self.callback = callback
-        self.dismissible = True
 
         self.enable_drag = True
         self.use_safe_area = True
         self.show_drag_handle = True
         self.is_scroll_controlled = True
 
-        self.captcha_image = ft.Image(fit=ft.ImageFit.COVER)
+        self.captcha_image = ft.Image(
+            fit=ft.ImageFit.COVER
+        )
         self.captcha_value = ft.TextField(
             input_filter=ft.InputFilter(r"^[0-9]*$"),
             text_align="center",
@@ -66,8 +67,6 @@ class CaptchaVerifyDialog(ft.BottomSheet):
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER
             )
         )
-
-        self.on_dismiss = lambda e: self.close()
 
     def close(self, e: ft.ControlEvent = None):
         self.page.close(self)
