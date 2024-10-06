@@ -1,4 +1,4 @@
-flet==0.24.0.dev3345
+flet==0.24.1
 bs4==0.0.2
 requests==2.32.3
 humanize==4.10.0
