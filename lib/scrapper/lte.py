@@ -40,10 +40,10 @@ class LTE(Base):
             table = list(resp_soup.find("table", class_="transdetail").find_all("tr"))
             label1 = table[4].find("td").text.strip()
 
-            data = {
-                label1 + f" ({tr.find("th").text.replace("الرصيد", "").strip()})": self.translator(tr.find("span").text.strip())
-                for tr in table[5:7]
-            }
+            data = {}
+            for tr in table[5:7]:
+                key = tr.find("th").text.replace("الرصيد", "").strip()
+                data[label1 + f" ({key})"] = self.translator(tr.find("span").text.strip())
 
             data["valid_credit"] = table[-2].find("td").text.strip()
             data[table[-1].find("th").text.strip()] = self.translator(table[-1].find("span").text.strip())
