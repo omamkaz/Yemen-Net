@@ -28,8 +28,10 @@ class CaptchaVerifyDialog(ft.BottomSheet):
         self.is_scroll_controlled = True
 
         self.captcha_image = ft.Image(
+            src="assets/verified.svg",
             fit=ft.ImageFit.COVER
         )
+
         self.captcha_value = ft.TextField(
             input_filter=ft.InputFilter(r"^[0-9]*$"),
             text_align="center",
