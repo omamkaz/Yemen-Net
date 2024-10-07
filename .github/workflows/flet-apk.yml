@@ -14,7 +14,7 @@ env:
   
   PROJECT: 'Yemen Net'
   COMPANY_NAME: 'omamkaz'
-  ORG_NAME: 'com.omamkaz'
+  ORG_NAME: 'com.omamkaz.yemennet'
   PRODUCT: 'رصيد يمن نت'
   DESCRIPTION: 'الاستعلام من رصيد يمن نت, بالأضافة الى بعض الخدمات و الاضافات الاخرى'
 
