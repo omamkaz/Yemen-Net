@@ -5,7 +5,7 @@ on:
 
 env:
   # https://flet.dev/docs/publish#versioning
-  BUILD_NUMBER: 1728239041
+  BUILD_NUMBER: 1728308761
   BUILD_VERSION: 7.0.0
   PYTHON_VERSION: 3.12 #3.12.5
   FLUTTER_VERSION: 3.24 # 3.22.5, 3.24.5
@@ -14,7 +14,7 @@ env:
   
   PROJECT: 'Yemen Net'
   COMPANY_NAME: 'omamkaz'
-  ORG_NAME: 'com.omamkaz.yemennet'
+  ORG_NAME: 'com.omamkaz'
   PRODUCT: 'رصيد يمن نت'
   DESCRIPTION: 'الاستعلام من رصيد يمن نت, بالأضافة الى بعض الخدمات و الاضافات الاخرى'
 
@@ -47,7 +47,7 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: ${{ env.PYTHON_VERSION }}
-        # architecture: 'x64'
+        architecture: 'x64'
 
     - name: Setup Python Environment and Install Dependencies
       run: |
@@ -74,11 +74,11 @@ jobs:
       run: |
         flutter doctor
         flutter config --no-analytics
-        flet build aab \
+        flet build apk \
         --include-packages flet_lottie \
         --verbose \
-        --build-number=$BUILD_NUMBER \
-        --build-version=$BUILD_VERSION \
+        --build-number="$BUILD_NUMBER" \
+        --build-version="$BUILD_VERSION" \
         --company="$COMPANY_NAME" \
         --org="$ORG_NAME" \
         --product="$PRODUCT" \
@@ -89,31 +89,32 @@ jobs:
         --flutter-build-args=--target-platform \
         --flutter-build-args=android-arm64
 
-    - name: Build Split APK
-      run: |
-        wget https://github.com/google/bundletool/releases/download/1.17.1/bundletool-all-1.17.1.jar
-        wget https://github.com/REAndroid/APKEditor/releases/download/V1.4.1/APKEditor-1.4.1.jar
+    # - name: Build Split APK
+    #   run: |
+    #     wget https://github.com/google/bundletool/releases/download/1.17.1/bundletool-all-1.17.1.jar
+    #     wget https://github.com/REAndroid/APKEditor/releases/download/V1.4.1/APKEditor-1.4.1.jar
 
-        cat <<EOF > /tmp/device_spec.json
-        {
-          "supportedAbis": ["arm64-v8a", "armeabi-v7a", "armeabi"],
-          "supportedLocales": ["en-US", "ar-YE", "ar-SA"],
-          "screenDensity": 480,
-          "sdkVersion": 31
-        }
-        EOF
+    #     cat <<EOF > /tmp/device_spec.json
+    #     {
+    #       "supportedAbis": ["arm64-v8a", "armeabi-v7a", "armeabi"],
+    #       "supportedLocales": ["en-US", "ar-YE", "ar-SA"],
+    #       "screenDensity": 480,
+    #       "sdkVersion": 31
+    #     }
+    #     EOF
         
-        java -jar bundletool-all-1.17.1.jar build-apks \
-            --bundle=build/aab/app-release.aab \
-            --output=build/aab/yemennet.apks \
-            --device-spec=/tmp/device_spec.json
+    #     java -jar bundletool-all-1.17.1.jar build-apks \
+    #         --bundle=build/aab/app-release.aab \
+    #         --output=build/aab/yemennet.apks \
+    #         --device-spec=/tmp/device_spec.json
         
-        java -jar APKEditor-1.4.1.jar merge -i build/aab/yemennet.apks
+    #     java -jar APKEditor-1.4.1.jar merge -i build/aab/yemennet.apks
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4.3.4
       with:
-        name: aab-build-artifact
-        path: build/aab/yemennet_merge.apk
+        name: apk-build-artifact
+        # path: build/aab/yemennet_merge.apk
+        path: build/apk
         if-no-files-found: warn
         overwrite: false
