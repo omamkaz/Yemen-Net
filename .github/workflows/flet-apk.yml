@@ -119,6 +119,6 @@ jobs:
         # path: build/apk
         # name: apk-build-artifact
         name: aab-build-artifact
-        path: build/aab/yemennet_merge.apk
+        path: build/aab/yemennet_merged.apk
         if-no-files-found: warn
         overwrite: false
