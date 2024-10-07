@@ -87,8 +87,7 @@ jobs:
         --flutter-build-args=--release \
         --flutter-build-args=--analyze-size \
         --flutter-build-args=--target-platform \
-        --flutter-build-args=android-arm64 \
-        --flutter-build-args=--pub
+        --flutter-build-args=android-arm64
 
     - name: Build Split APK
       run: |
