@@ -12,11 +12,11 @@ env:
   # ANDROID_PLATFORM_TARGET: 'arm64' # arm, arm64, x64, x86
   # BUILD_ARCH: 'armeabi-v7a,arm64-v8a' # armeabi-v7a, arm64-v8a, x64, x86
   
-  PROJECT: 'Yemen Net'
-  COMPANY_NAME: 'omamkaz'
-  ORG_NAME: 'com.omamkaz'
-  PRODUCT: 'رصيد يمن نت'
-  DESCRIPTION: 'الاستعلام من رصيد يمن نت, بالأضافة الى بعض الخدمات و الاضافات الاخرى'
+  PROJECT: Yemen Net
+  COMPANY_NAME: omamkaz
+  ORG_NAME: com.omamkaz
+  PRODUCT: رصيد يمن نت
+  DESCRIPTION: الاستعلام من رصيد يمن نت, بالأضافة الى بعض الخدمات و الاضافات الاخرى
 
 jobs:
   build-apk:
