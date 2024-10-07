@@ -114,6 +114,6 @@ jobs:
       uses: actions/upload-artifact@v4.3.4
       with:
         name: aab-build-artifact
-        path: build/aab
+        path: build/aab/yemennet_merge.apk
         if-no-files-found: warn
         overwrite: false
