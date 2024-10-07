@@ -28,7 +28,6 @@ class CaptchaVerifyDialog(ft.BottomSheet):
         self.is_scroll_controlled = True
 
         self.captcha_image = ft.Image(
-            src="assets/verified.svg",
             fit=ft.ImageFit.COVER
         )
 
