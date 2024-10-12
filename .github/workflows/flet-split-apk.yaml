@@ -5,7 +5,7 @@ on:
 
 env:
   # https://flet.dev/docs/publish#versioning
-  BUILD_NUMBER: 1728770041
+  BUILD_NUMBER: 1728770521
   BUILD_VERSION: 8.0.0
   PYTHON_VERSION: 3.12.5
   FLUTTER_VERSION: 3.24.3
@@ -89,35 +89,33 @@ jobs:
         --flutter-build-args=--target-platform \
         --flutter-build-args=android-arm64,android-arm
 
-    - name: Build Split APK
-      run: |
-        wget https://github.com/google/bundletool/releases/download/1.17.1/bundletool-all-1.17.1.jar
-        wget https://github.com/REAndroid/APKEditor/releases/download/V1.4.1/APKEditor-1.4.1.jar
+    # - name: Build Split APK
+    #   run: |
+    #     wget https://github.com/google/bundletool/releases/download/1.17.1/bundletool-all-1.17.1.jar
+    #     wget https://github.com/REAndroid/APKEditor/releases/download/V1.4.1/APKEditor-1.4.1.jar
 
-        cat <<EOF > /tmp/device_spec.json
-        {
-          "supportedAbis": ["arm64-v8a", "armeabi-v7a", "armeabi"],
-          "supportedLocales": ["en-US", "ar-YE", "ar-SA"],
-          "screenDensity": 480,
-          "sdkVersion": 31,
-          "sdkRuntime": {
-          }
-        }
-        EOF
+    #     cat <<EOF > /tmp/device_spec.json
+    #     {
+    #       "supportedAbis": ["arm64-v8a", "armeabi-v7a", "armeabi"],
+    #       "supportedLocales": ["en-US", "ar-YE", "ar-SA"],
+    #       "screenDensity": 480,
+    #       "sdkVersion": 31,
+    #       "sdkRuntime": {
+    #       }
+    #     }
+    #     EOF
         
-        java -jar bundletool-all-1.17.1.jar build-apks \
-            --bundle=build/aab/app-release.aab \
-            --output=build/aab/yemennet.apks \
-            --device-spec=/tmp/device_spec.json
+    #     java -jar bundletool-all-1.17.1.jar build-apks \
+    #         --bundle=build/aab/app-release.aab \
+    #         --output=build/aab/yemennet.apks \
+    #         --device-spec=/tmp/device_spec.json
         
-        java -jar APKEditor-1.4.1.jar merge -i build/aab/yemennet.apks
+    #     java -jar APKEditor-1.4.1.jar merge -i build/aab/yemennet.apks
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4.3.4
       with:
-        # path: build/apk
-        # name: apk-build-artifact
-        name: aab-build-artifact
-        path: build/aab/yemennet_merged.apk
+        path: build/
+        name: apk-build-artifact
         if-no-files-found: warn
         overwrite: false
