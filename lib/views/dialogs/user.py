@@ -36,7 +36,10 @@ class DropdownOption(ft.dropdown.Option):
                     width=32,
                     height=32
                 ),
-                ft.Text(value=atype)
+                ft.Text(
+                    value=atype,
+                    rtl=True
+                )
             ]
         )
 
@@ -90,6 +93,7 @@ class UserDialog(ft.BottomSheet):
                                 value=ACCOUNT_TYPES[0],
                                 weight=ft.FontWeight.W_500,
                                 size=16,
+                                rtl=True
                             ),
                             ft.Icon(name=view_type_icon)
                         ]

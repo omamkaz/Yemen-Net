@@ -7,7 +7,9 @@ from humanize import naturalsize
 
 
 USERNAME = "omamkaz"
-ACCOUNT_TYPES = ("Yemen Net (ADSL)", "4G LTE", "Phone")
+# ACCOUNT_TYPES = ("Yemen Net (ADSL)", "4G LTE", "Phone")
+ACCOUNT_TYPES = ("الأنترنت المنزلي (ADSL)", "الفورجي", "الهاتف المنزلي")
+
 ABOUT_LINK_ICONS = (
     ("google", "#db4437", f"mailto:{USERNAME}@gmail.com"),
     ("paypal", "#00a7ce", f"PayPal.me/{USERNAME}"),
