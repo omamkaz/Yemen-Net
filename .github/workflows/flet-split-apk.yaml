@@ -41,7 +41,7 @@ jobs:
           build-essential \
           python3-dev \
           libc6:amd64 libstdc++6:amd64 \
-          libbz2-1.0:amd64 libncurses5:amd64
+          libbz2-1.0:amd64
 
     - name: Setup Python ${{ env.PYTHON_VERSION }}
       uses: actions/setup-python@v5
