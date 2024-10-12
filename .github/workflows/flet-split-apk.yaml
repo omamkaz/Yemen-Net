@@ -115,7 +115,7 @@ jobs:
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4.3.4
       with:
-        path: build/
+        path: build/apk
         name: apk-build-artifact
         if-no-files-found: warn
         overwrite: false
