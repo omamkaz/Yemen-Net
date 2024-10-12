@@ -1,4 +1,4 @@
-name: Flet APK Build
+name: Flet Split APK Build
 
 on:
   workflow_dispatch:
