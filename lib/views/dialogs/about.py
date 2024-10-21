@@ -29,23 +29,6 @@ class LinkIcon(ft.IconButton):
             self.page.launch_url(self.link)
 
 
-class Link(ft.TextField):
-    def __init__(self, 
-                 label: str,
-                 value: str):
-        super().__init__(
-            value=value,
-            read_only=True,
-            label=label,
-            height=50,
-            border_radius=5,
-            cursor_height=16,
-            content_padding=10,
-            border_width=1.5,
-            text_size=14
-        )
-
-
 class AboutDialog(ft.BottomSheet):
     def __init__(self, page: ft.Page):
         super().__init__(ft.Control)
@@ -62,7 +45,8 @@ class AboutDialog(ft.BottomSheet):
                 horizontal_alignment="center",
                 controls=[
                     ft.Text(
-                        value="عن المطور"
+                        value="عن المطور",
+                        weight=ft.FontWeight.BOLD
                     ),
                     ft.Container(
                         width=64,
@@ -73,7 +57,10 @@ class AboutDialog(ft.BottomSheet):
                             fit="cover"
                         )
                     ),
-                    ft.Text("Osama Mohammed AL-Zabidi", size=14),
+                    ft.Text(
+                        value="Osama Mohammed AL-Zabidi", 
+                        size=14
+                    ),
                     ft.Text(
                         "Software Developer | Python Programming | GUI & Web Apps",
                         weight="w400",
@@ -85,7 +72,18 @@ class AboutDialog(ft.BottomSheet):
                         content=ft.Column(
                             spacing=16,
                             controls=[
-                                Link("Username", "@omamkaz"),
+                                ft.TextField(
+                                    value="@omamkaz",
+                                    read_only=True,
+                                    label="Username",
+                                    height=50,
+                                    border_radius=5,
+                                    cursor_height=16,
+                                    content_padding=10,
+                                    border_width=1.5,
+                                    text_size=14,
+                                    on_focus=lambda e: self.page.set_clipboard(e.control.value)
+                                ),
                                 ft.Row(
                                     spacing=0,
                                     alignment=ft.MainAxisAlignment.CENTER,
@@ -97,16 +95,26 @@ class AboutDialog(ft.BottomSheet):
                             ]
                         )
                     ),
-
                     ft.Container(
                         alignment=ft.alignment.center,
-                        margin=ft.margin.only(right=10, bottom=10),
-                        content=ft.Text(
-                            value="v7.0.0",
-                            weight=ft.FontWeight.BOLD,
-                            font_family="Monospace",
-                            text_align="center",
-                            size=13
+                        margin=ft.margin.only(right=10, bottom=10, left=10),
+                        content=ft.Row(
+                            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                            controls=[
+                                ft.Text(
+                                    value="v8.0.0",
+                                    weight=ft.FontWeight.BOLD,
+                                    font_family="Monospace",
+                                    text_align="center",
+                                    size=13
+                                ),
+                                ft.Image(
+                                    src="assets/flag.png",
+                                    fit=ft.ImageFit.COVER,
+                                    width=24,
+                                    height=14
+                                )
+                            ]
                         )
                     )
                 ]

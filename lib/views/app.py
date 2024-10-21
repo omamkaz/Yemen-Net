@@ -26,19 +26,20 @@ class Application:
     def __call__(self, page: ft.Page) -> None:
         self.page = page
 
+        page.padding = 0
+        page.expand = True
+
         page.window.wait_until_ready_to_show = True
         page.horizontal_alignment = page.vertical_alignment = "center"
 
         page.title = "رصيد يمن نت"
         page.window.icon = "assets/icon.png"
         page.theme_mode = ThemeController.get_theme_mode(page)
-        ThemeController.set_theme_color(ThemeController.get_theme_color(page), page)
         page.fonts = {
             "linaround": "/fonts/linaround_regular.otf"
         }
 
-        page.padding = 0
-        page.expand = True
+        ThemeController.set_theme_color(ThemeController.get_theme_color(page), page)
 
         ft.SystemOverlayStyle.enforce_system_status_bar_contrast = True
         ft.SystemOverlayStyle.enforce_system_navigation_bar_contrast = True
@@ -53,8 +54,7 @@ class Application:
             page.window.max_height = 700
             
             if page.client_storage.contains_key("size"):
-                page.window.width = page.client_storage.get("size")[0]
-                page.window.height = page.client_storage.get("size")[1]
+                page.window.width, page.window.height = page.client_storage.get("size")
 
         page.bottom_appbar = BottomAppBar(page)
         page.floating_action_button_location = ft.FloatingActionButtonLocation.CENTER_DOCKED
@@ -79,7 +79,8 @@ class Application:
                                     margin=0,
                                     height=250,
                                     border_radius=ft.BorderRadius(0, 0, 42, 42),
-                                    bgcolor=page.theme.color_scheme_seed
+                                    bgcolor=page.theme.color_scheme_seed,
+                                    border=ft.border.all(2, page.theme.color_scheme_seed)
                                 ),
                                 Cards(page, ref=Refs.cards)
                             ]

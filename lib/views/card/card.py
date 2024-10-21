@@ -24,15 +24,8 @@ class Card(ft.GestureDetector):
         self.card_credit: CardCredit = CardCredit()
         self.card_items = ft.Ref[ft.Column]()
 
-        self.on_tap = self._on_tap
         self.on_pan_end = self._on_pan_end
         self.on_pan_update = self._on_pan_update
-
-        self._image = ft.DecorationImage(
-            src="assets/7oct.jpg",
-            fit=ft.ImageFit.COVER,
-            opacity=0.1
-        )
 
         self.content = ft.Container(
                 expand=True,
@@ -43,7 +36,6 @@ class Card(ft.GestureDetector):
                 margin=ft.margin.only(left=14, right=14, top=25),
                 animate=ft.Animation(200, ft.AnimationCurve.LINEAR_TO_EASE_OUT),
                 bgcolor=ThemeController.get_color(self.page.theme.color_scheme_seed, 800),
-                image=self._image,
                 shadow=ft.BoxShadow(
                     spread_radius=-10,
                     blur_radius=8,
@@ -127,7 +119,7 @@ class Card(ft.GestureDetector):
 
     def _on_pan_end(self, e: ft.DragEndEvent) -> None:
         if (self.content.margin.top >= (25 + 8) 
-            and not self.is_loading() 
+            and not self.is_loading()
             and self._user_id is not None):
 
             self.set_login(self._user_id)
@@ -135,16 +127,12 @@ class Card(ft.GestureDetector):
         self.content.margin.top = 25
         self.content.update()
 
-    def _on_tap(self, e: ft.TapEvent) -> None:
-        self.content.image = None if self.content.image is not None else self._image
-        self.update()
-
     def set_loading(self, on: bool) -> None:
-        self.page.views[0].disabled = on
         self.card_title.leading.content.src_base64 = LottieFiles.loading_carga if on else LottieFiles.down_arrow
+        self.page.views[0].disabled = on
 
-        self.page.update()
         self.card_title.leading.update()
+        self.page.update()
 
     def is_loading(self) -> bool:
         return self.page.views[0].disabled

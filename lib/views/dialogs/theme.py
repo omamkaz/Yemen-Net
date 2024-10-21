@@ -56,12 +56,13 @@ class ThemeModeButtonGroup(ft.Row):
         self.controls = [
             ft.Container(
                 key=name,
-                padding=5,
+                padding=6,
                 tooltip=tooltip,
                 border_radius=18,
                 on_click=self._on_click,
                 alignment=ft.alignment.center,
-                border=None if name != value else ft.border.all(2),
+                border=self.get_border(name != value),
+                bgcolor=self.get_bgcolor(value),
                 content=ft.Column(
                     alignment=ft.MainAxisAlignment.CENTER,
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -86,9 +87,20 @@ class ThemeModeButtonGroup(ft.Row):
                 ["الوضع الافتراضي", "الوضع الليلي", "الوضع النهاري"])
         ]
 
+    def get_color(self, char: str) -> str:
+        return f"#{char * 6}"
+
+    def get_border(self, statement: bool) -> ft.Border:
+        return None if statement else ft.border.all(1.5)
+
+    def get_bgcolor(self, mode: str) -> str:
+        bg_mode: str = self.page.platform_brightness.name if mode == "sytem" else mode
+        return self.get_color("f") if bg_mode == "light" else self.get_color("1")
+
     def select_mode(self, mode: str) -> None:
         for c in self.controls:
-            c.border = None if c.key != mode else ft.border.all(2)
+            c.bgcolor = self.get_bgcolor(mode)
+            c.border = self.get_border(c.key != mode)
         self.update()
 
     def _on_click(self, e: ft.ControlEvent) -> None:
