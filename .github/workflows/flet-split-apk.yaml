@@ -5,7 +5,7 @@ on:
 
 env:
   # https://flet.dev/docs/publish#versioning
-  BUILD_NUMBER: 1728770521
+  BUILD_NUMBER: 1729522501
   BUILD_VERSION: 8.0.0
   PYTHON_VERSION: 3.12.5
   FLUTTER_VERSION: 3.24.3
@@ -77,6 +77,7 @@ jobs:
         flet build apk \
         --include-packages flet_lottie \
         --verbose \
+        --split-per-abi \
         --build-number="$BUILD_NUMBER" \
         --build-version="$BUILD_VERSION" \
         --company="$COMPANY_NAME" \
@@ -84,33 +85,9 @@ jobs:
         --product="$PRODUCT" \
         --description="$DESCRIPTION" \
         --project="$PROJECT" \
-        --split-per-abi \
         --flutter-build-args=--release \
         --flutter-build-args=--target-platform \
-        --flutter-build-args=android-arm64,android-arm
-
-    # - name: Build Split APK
-    #   run: |
-    #     wget https://github.com/google/bundletool/releases/download/1.17.1/bundletool-all-1.17.1.jar
-    #     wget https://github.com/REAndroid/APKEditor/releases/download/V1.4.1/APKEditor-1.4.1.jar
-
-    #     cat <<EOF > /tmp/device_spec.json
-    #     {
-    #       "supportedAbis": ["arm64-v8a", "armeabi-v7a", "armeabi"],
-    #       "supportedLocales": ["en-US", "ar-YE", "ar-SA"],
-    #       "screenDensity": 480,
-    #       "sdkVersion": 31,
-    #       "sdkRuntime": {
-    #       }
-    #     }
-    #     EOF
-        
-    #     java -jar bundletool-all-1.17.1.jar build-apks \
-    #         --bundle=build/aab/app-release.aab \
-    #         --output=build/aab/yemennet.apks \
-    #         --device-spec=/tmp/device_spec.json
-        
-    #     java -jar APKEditor-1.4.1.jar merge -i build/aab/yemennet.apks
+        --flutter-build-args=android-arm64
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4.3.4
