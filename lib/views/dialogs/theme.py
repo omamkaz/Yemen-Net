@@ -96,8 +96,9 @@ class ThemeModeButtonGroup(ft.Row):
         return None if statement else ft.border.all(1.5)
 
     def get_bgcolor(self, mode: str) -> str:
-        bg_mode: str = self.page.platform_brightness.name.lower() if mode == "system" else mode
-        return self.get_color("f") if bg_mode == "light" else self.get_color("1")
+        if self.page is not None:
+            mode: str = self.page.platform_brightness.name.lower() if mode == "system" else mode
+        return self.get_color("f") if mode == "light" else self.get_color("1")
 
     def select_mode(self, mode: str) -> None:
         for c in self.controls:
@@ -111,8 +112,8 @@ class ThemeModeButtonGroup(ft.Row):
 
 
 class ThemeDialog(ft.BottomSheet):
-    def __init__(self, page: ft.Page, **kwargs):
-        super().__init__(ft.Control, **kwargs)
+    def __init__(self, page: ft.Page):
+        super().__init__(ft.Control)
 
         self.page = page
         self.enable_drag = True
