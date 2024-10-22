@@ -5,8 +5,8 @@ on:
 
 env:
   # https://flet.dev/docs/publish#versioning
-  BUILD_NUMBER: 1728308761
-  BUILD_VERSION: 7.0.0
+  BUILD_NUMBER: 1729631428
+  BUILD_VERSION: 8.0.0
   PYTHON_VERSION: 3.12.5
   FLUTTER_VERSION: 3.24.3
   # ANDROID_PLATFORM_TARGET: 'arm64' # arm, arm64, x64, x86
@@ -75,8 +75,8 @@ jobs:
         flutter doctor
         flutter config --no-analytics
         flet build aab \
-        --include-packages flet_lottie \
         --verbose \
+        --include-packages flet_lottie \
         --build-number="$BUILD_NUMBER" \
         --build-version="$BUILD_VERSION" \
         --company="$COMPANY_NAME" \
