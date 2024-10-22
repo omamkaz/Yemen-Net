@@ -80,7 +80,7 @@ class Application:
                                     height=250,
                                     border_radius=ft.BorderRadius(0, 0, 42, 42),
                                     bgcolor=page.theme.color_scheme_seed,
-                                    border=ft.border.all(2, page.theme.color_scheme_seed)
+                                    # border=ft.border.all(2, page.theme.color_scheme_seed)
                                 ),
                                 Cards(page, ref=Refs.cards)
                             ]

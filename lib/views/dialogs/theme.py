@@ -10,8 +10,9 @@ class ThemeColorButtonGroup(ft.Row):
     def __init__(self,
                  value: str,
                  colors: Sequence[str],
-                 on_change: Callable):
-        super().__init__()
+                 on_change: Callable,
+                 **kwargs):
+        super().__init__(**kwargs)
 
         self.scroll = ft.ScrollMode.HIDDEN
         self.alignment = ft.MainAxisAlignment.CENTER
@@ -46,8 +47,9 @@ class ThemeColorButtonGroup(ft.Row):
 class ThemeModeButtonGroup(ft.Row):
     def __init__(self,
                  value: str,
-                 on_change: Callable):
-        super().__init__()
+                 on_change: Callable,
+                 **kwargs):
+        super().__init__(**kwargs)
 
         self.on_change = on_change
         self.alignment = ft.MainAxisAlignment.SPACE_AROUND
@@ -56,7 +58,7 @@ class ThemeModeButtonGroup(ft.Row):
         self.controls = [
             ft.Container(
                 key=name,
-                padding=6,
+                padding=8,
                 tooltip=tooltip,
                 border_radius=18,
                 on_click=self._on_click,
@@ -94,7 +96,7 @@ class ThemeModeButtonGroup(ft.Row):
         return None if statement else ft.border.all(1.5)
 
     def get_bgcolor(self, mode: str) -> str:
-        bg_mode: str = self.page.platform_brightness.name if mode == "sytem" else mode
+        bg_mode: str = self.page.platform_brightness.name.lower() if mode == "system" else mode
         return self.get_color("f") if bg_mode == "light" else self.get_color("1")
 
     def select_mode(self, mode: str) -> None:
@@ -109,9 +111,9 @@ class ThemeModeButtonGroup(ft.Row):
 
 
 class ThemeDialog(ft.BottomSheet):
-    def __init__(self, page: ft.Page):
-        super().__init__(ft.Control)
-        
+    def __init__(self, page: ft.Page, **kwargs):
+        super().__init__(ft.Control, **kwargs)
+
         self.page = page
         self.enable_drag = True
         self.show_drag_handle = True

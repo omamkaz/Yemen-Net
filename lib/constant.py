@@ -76,8 +76,8 @@ class ThemeController:
 
     @staticmethod
     def get_theme_mode(page: ft.Page) -> str:
-        return (page.client_storage.get("theme_mode") 
-                or page.platform_brightness.name 
+        return (page.client_storage.get("theme_mode")
+                or page.platform_brightness.name
                 or "system").lower()
 
     @staticmethod
@@ -91,9 +91,9 @@ class ThemeController:
         return color + str(opacity)
 
     @staticmethod
-    def toggle_theme_mode(theme_mode: str, page: ft.Page) -> None:
-        page.client_storage.set("theme_mode", theme_mode)
-        page.theme_mode = theme_mode
+    def toggle_theme_mode(mode: str, page: ft.Page) -> None:
+        page.client_storage.set("theme_mode", mode)
+        page.theme_mode = mode
         page.update()
 
     @staticmethod
