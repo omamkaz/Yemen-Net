@@ -1,5 +1,5 @@
 bs4==0.0.2
-flet==0.24.1
+flet==0.25.0.dev3570
 requests==2.32.3
 humanize==4.10.0
 pydal==20240906.1
