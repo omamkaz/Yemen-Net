@@ -53,7 +53,7 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: ${{ env.PYTHON_VERSION }}
-        #architecture: 'x64'
+        architecture: 'x64'
 
     - name: Setup Python Environment and Install Dependencies
       run: |
@@ -93,7 +93,7 @@ jobs:
         --project="$PROJECT" \
         --flutter-build-args=--release \
         --flutter-build-args=--target-platform \
-        --flutter-build-args=android-arm64,android-arm
+        --flutter-build-args=android-arm64
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4.3.4
