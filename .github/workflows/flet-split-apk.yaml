@@ -25,10 +25,12 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      with:
-        ref: main
-        fetch-depth: 1
-        sparse-checkout: .
+
+    - name: Remove cache files
+      run: |
+        rm -rf .git
+        rm -rf .github
+        rm .gitignore
 
     - name: Patch for APK build
       run: |
