@@ -6,7 +6,7 @@ on:
 env:
   # https://flet.dev/docs/publish#versioning
   BUILD_NUMBER: 1729719541
-  BUILD_VERSION: 8.0.0
+  BUILD_VERSION: 9.0.0
   PYTHON_VERSION: 3.12.5
   FLUTTER_VERSION: 3.24.3
   # ANDROID_PLATFORM_TARGET: 'arm64' # arm, arm64, x64, x86
@@ -53,7 +53,7 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: ${{ env.PYTHON_VERSION }}
-        #architecture: 'x64'
+        architecture: 'x64'
 
     - name: Setup Python Environment and Install Dependencies
       run: |
