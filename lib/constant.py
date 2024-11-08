@@ -151,7 +151,6 @@ class Dialogs:
                 title=ft.Text(
                     value = str(err),
                     text_align="center",
-                    overflow=ft.TextOverflow.ELLIPSIS,
                     rtl=True
                 ),
                 content=ft.Lottie(

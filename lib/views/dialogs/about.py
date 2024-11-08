@@ -17,6 +17,7 @@ class LinkIcon(ft.IconButton):
         self.link = link
         self.tooltip = icon.title()
         self.on_click = self.on_open_url
+        
         self.content = ft.Image(
             src = f"/logo/{icon}.svg",
             color=color,
@@ -98,24 +99,31 @@ class AboutDialog(ft.BottomSheet):
                     ft.Container(
                         alignment=ft.alignment.center,
                         margin=ft.margin.only(right=10, bottom=10, left=10),
-                        content=ft.Row(
-                            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                            controls=[
-                                ft.Text(
-                                    value="v8.0.0",
-                                    weight=ft.FontWeight.BOLD,
-                                    font_family="Monospace",
-                                    text_align="center",
-                                    size=13
-                                ),
-                                ft.Image(
-                                    src="assets/flag.png",
-                                    fit=ft.ImageFit.COVER,
-                                    width=24,
-                                    height=14
-                                )
-                            ]
-                        )
+                        content=ft.Text(
+                            value="v9.0.0",
+                            weight=ft.FontWeight.BOLD,
+                            font_family="Monospace",
+                            text_align="center",
+                            size=13
+                        ),
+                        # content=ft.Row(
+                        #     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                        #     controls=[
+                        #         ft.Text(
+                        #             value="v9.0.0",
+                        #             weight=ft.FontWeight.BOLD,
+                        #             font_family="Monospace",
+                        #             text_align="center",
+                        #             size=13
+                        #         ),
+                        #         ft.Image(
+                        #             src="assets/flag.png",
+                        #             fit=ft.ImageFit.COVER,
+                        #             width=24,
+                        #             height=14
+                        #         )
+                        #     ]
+                        # )
                     )
                 ]
             )

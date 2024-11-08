@@ -6,19 +6,19 @@ import requests
 import flet as ft
 from typing import Callable
 from ...constant import Dialogs
+from ...scrapper import Base, ADSL
 
 
 class CaptchaVerifyDialog(ft.BottomSheet):
     def __init__(self, 
                  page: ft.Page,
-                 isp,
+                 isp: Base | ADSL,
                  callback: Callable, 
                  captcha_len: int = 4,
                  **kwargs):
         super().__init__(ft.Control, **kwargs)
 
         self.page = page
-
         self.isp = isp
         self.callback = callback
 
@@ -59,7 +59,7 @@ class CaptchaVerifyDialog(ft.BottomSheet):
                                 on_click=self.close
                             ),
                             ft.ElevatedButton(
-                                text = "حفظ",
+                                text = "تحقق",
                                 on_click=self.on_submit
                             )
                         ]

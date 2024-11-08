@@ -5,6 +5,7 @@ import flet as ft
 from ...constant import Refs
 from ...models.user import User
 from ..dialogs import EditUserDialog
+from ..dialogs.credit_card import CreditCardDialog
 
 
 class UserListTile(ft.ListTile):
@@ -18,10 +19,10 @@ class UserListTile(ft.ListTile):
                  **kwargs):
         super().__init__(**kwargs)
 
+        self.page = page
+
         self._index = index
         self._atype = atype
-
-        self.page = page
 
         self.on_click = self._on_click
 
@@ -46,9 +47,14 @@ class UserListTile(ft.ListTile):
         )
 
         self.leading = ft.PopupMenuButton(
-            # menu_position=ft.PopupMenuPosition.OVER,
             tooltip="خيارات اخرى",
             items=[
+                ft.PopupMenuItem(
+                    text="تجديد",
+                    icon=ft.icons.CREDIT_CARD,
+                    on_click=self.on_credit,
+                    disabled=self._atype != 0
+                ),
                 ft.PopupMenuItem(
                     text="تعديل",
                     icon=ft.icons.EDIT,
@@ -100,10 +106,14 @@ class UserListTile(ft.ListTile):
         )
         self.page.open(alert)
 
+    def set_verified(self, on: bool) -> None:
+        self.trailing.controls[-1].visible = on
+        self.trailing.update()
+
     def on_edit(self, e: ft.ControlEvent):
         user_view_edit = EditUserDialog(self.page, self.data)
         self.page.open(user_view_edit)
 
-    def set_verified(self, on: bool) -> None:
-        self.trailing.controls[-1].visible = on
-        self.trailing.update()
+    def on_credit(self, e: ft.ControlEvent) -> None:
+        credit_card_dialog = CreditCardDialog(self.page, self._index)
+        credit_card_dialog.open_dialog()
